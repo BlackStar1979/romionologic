@@ -1,1 +1,52 @@
-xxx
+spec_version: 0.1.0-alpha
+metadata:
+  name: loop-stability
+  description: Test stabilności pętli
+hypergraph:
+  edges:
+    - nodes: [A, B, C]
+      attrs: {type: R3}
+    - nodes: [C, D, E, F]
+      attrs: {type: R4}
+rules:
+  - name: loop-grow
+    when:
+      match: {type: R3}
+    do:
+      remove: [{nodes:[x,y,z], type:R3}]
+      add:
+        - {nodes:[x,z,w], type:R3}
+        - {nodes:[y,w], type:R2}
+    invariants:
+      preserve_loop_class: true
+probes: [loops, degree_dist, entropy]
+run:
+  steps: 5000
+  schedule: random-local
+  export: {metrics: metrics.json}
+spec_version: 0.1.0-alpha
+metadata:
+  name: loop-stability
+  description: Test stabilności pętli
+hypergraph:
+  edges:
+    - nodes: [A, B, C]
+      attrs: {type: R3}
+    - nodes: [C, D, E, F]
+      attrs: {type: R4}
+rules:
+  - name: loop-grow
+    when:
+      match: {type: R3}
+    do:
+      remove: [{nodes:[x,y,z], type:R3}]
+      add:
+        - {nodes:[x,z,w], type:R3}
+        - {nodes:[y,w], type:R2}
+    invariants:
+      preserve_loop_class: true
+probes: [loops, degree_dist, entropy]
+run:
+  steps: 5000
+  schedule: random-local
+  export: {metrics: metrics.json}
