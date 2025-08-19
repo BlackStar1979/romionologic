@@ -30,6 +30,19 @@
 
 <!-- Logika strony (twój plik) -->
 <script defer src="/assets/js/spec.js"></script>
+
+<!-- Ikony -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-71LL850G1L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-71LL850G1L');
+</script>
 </head>
 <body class="page-spec">
   <a class="sr-only sr-only-focusable" href="#main">Przejdź do treści</a>
@@ -52,6 +65,14 @@
         <a href="/manifest">Manifest</a>
       </nav>
     </header>
+
+    <!-- NOSCRIPT: komunikat, gdy JS jest wyłączony -->
+    <noscript>
+      <div class="info js-off" role="alert" aria-label="Informacja: JavaScript wyłączony">
+        Część funkcji wymaga JavaScript (kopiuj / zapisz / druk w blokach kodu oraz pływające „Sekcje”).
+        Treść specyfikacji pozostaje dostępna – możesz ją czytać i kopiować ręcznie.
+      </div>
+    </noscript>
 
     <!-- TEZA -->
     <div class="teza">
@@ -251,8 +272,9 @@ romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
       </div>
     </main>
 
-    <footer>
+    <footer class="wrap" style="color:#6b7280;margin-bottom:40px">
       © ROMION O'LOGIC™ — Specyfikacja ROMION SIM™ (ALPHA).
+      <a href="https://neocities.org" target="_blank" rel="noopener noreferrer" class="neocities-button" title="Hosted by Neocities" style="display:inline-block;margin-left:8px;vertical-align:middle"><img src="https://romionologic.neocities.org/neocities.png" alt="Hosted by Neocities" width="88" height="31"></a>
     </footer>
   </div>
 
@@ -300,6 +322,19 @@ romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
 
 <!-- STRZAŁKA „DO GÓRY” -->
 <button id="toTop" aria-label="Wróć na górę">↑</button>
+
+<!-- Dane Strukturalne: ta podstrona /sim/spec -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "ROMION SIM™ — Specyfikacja (α)",
+  "url": "https://romionologic.neocities.org/sim/spec",
+  "inLanguage": "pl-PL",
+  "isPartOf": { "@type": "WebSite", "url": "https://romionologic.neocities.org/" },
+  "description": "Specyfikacja ROMION SIM™: format eksperymentów (hipergraf, reguły τ, sondy 𝕀, uruchomienie), walidacja i wersjonowanie."
+}
+</script>
 
 </body>
 </html>
