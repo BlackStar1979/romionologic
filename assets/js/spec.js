@@ -128,3 +128,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// === Mobile TOC: FAB + sheet ===
+document.addEventListener('DOMContentLoaded', () => {
+  const fab = document.getElementById('tocFab');
+  const sheet = document.getElementById('tocSheet');
+  const backdrop = document.getElementById('sheetBackdrop');
+
+  if (!fab || !sheet || !backdrop) return;
+
+  const open = () => {
+    sheet.style.display = 'block';
+    backdrop.style.display = 'block';
+    fab.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => {
+    sheet.style.display = 'none';
+    backdrop.style.display = 'none';
+    fab.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
+
+  fab.addEventListener('click', () => (sheet.style.display === 'block' ? close() : open()));
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+  // Smooth scroll z arkusza + auto-zamykanie
+  sheet.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      close();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', id);
+    });
+  });
+});
