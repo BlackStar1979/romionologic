@@ -101,3 +101,31 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 }
 #toTop:hover{background:#2a2a2a}
 @media (max-width:1100px){ #toTop{ right:12px; bottom:12px } }
+
+/* ===== Mobile TOC: FAB + bottom-sheet ===== */
+#tocFab{
+  position:fixed; right:24px; bottom:84px; display:none;
+  align-items:center; gap:.5rem; padding:.6rem .85rem;
+  background:var(--primary); color:#fff; border:0; border-radius:999px;
+  box-shadow:0 6px 24px rgba(0,0,0,.35); cursor:pointer; z-index:1001;
+}
+#tocFab:active{ transform:translateY(1px) }
+
+#sheetBackdrop{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
+}
+#tocSheet{
+  display:none; position:fixed; left:0; right:0; bottom:0; z-index:1001;
+  background:var(--accent); border-top-left-radius:16px; border-top-right-radius:16px;
+  border:1px solid var(--border); box-shadow:0 -8px 32px rgba(0,0,0,.45);
+  max-height:70vh; overflow:auto; padding:12px 14px;
+}
+#tocSheet h3{ margin:4px 0 10px; color:#cfd8e3 }
+#tocSheet a{ display:block; padding:10px 8px; border-radius:8px; color:var(--text); text-decoration:none }
+#tocSheet a:hover{ background:#2f2f2f }
+
+/* Widoczność: desktop vs mobile */
+@media (max-width: 900px){
+  .toc-float{ display:none !important; }   /* chowamy panel boczny */
+  #tocFab{ display:flex; }
+}
