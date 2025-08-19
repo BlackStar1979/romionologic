@@ -167,3 +167,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// === Scroll-to-top (pokazuj po przewinięciu) ===
+document.addEventListener('DOMContentLoaded', () => {
+  const toTop = document.getElementById('toTop');
+  if (toTop) {
+    const showAt = 300;
+    const onScroll = () => { toTop.style.display = (window.scrollY > showAt) ? 'block' : 'none'; };
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+});
+
+// === Loader do <code data-src="..."> (ładuje pliki do boxów) ===
+document.addEventListener('DOMContentLoaded', () => {
+  const codes = Array.from(document.querySelectorAll('code[data-src]'));
+  if (!codes.length) return;
+
+  const loadOne = async (code) => {
+    const url = code.getAttribute('data-src');
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const txt = await res.text();
+      code.textContent = txt;
+      if (window.hljs) window.hljs.highlightElement(code);
+    } catch (e) {
+      code.textContent = `// błąd ładowania: ${e.message || e}`;
+    }
+  };
+
+  codes.forEach(loadOne);
+
+  // Obsługa przycisków Kopiuj/Zapisz/Drukuj powiązanych z najbliższym <pre>
+  document.querySelectorAll('.code-toolbar').forEach(toolbar => {
+    const pre = toolbar.nextElementSibling && toolbar.nextElementSibling.matches('pre, .code, .code-box')
+      ? toolbar.nextElementSibling : null;
+    const code = pre ? pre.querySelector('code') : null;
+    if (!code) return;
+
+    const getText = () => code.innerText || code.textContent || '';
+
+    const btnCopy = toolbar.querySelector('.copy');
+    if (btnCopy) btnCopy.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(getText()); btnCopy.textContent = '✅ Skopiowano'; }
+      catch { btnCopy.textContent = '❌ Błąd'; }
+      setTimeout(() => btnCopy.textContent = '📋 Kopiuj', 1200);
+    });
+
+    const btnSave = toolbar.querySelector('.save');
+    if (btnSave) btnSave.addEventListener('click', () => {
+      const blob = new Blob([getText()], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (code.getAttribute('data-src') || 'snippet.txt').split('/').pop();
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+
+    const btnPrint = toolbar.querySelector('.print');
+    if (btnPrint) btnPrint.addEventListener('click', () => {
+      const w = window.open('', '_blank');
+      w.document.write('<pre style="white-space:pre-wrap;word-wrap:break-word;">' +
+        (getText().replace(/[&<>]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[s]))) +
+        '</pre>');
+      w.document.close(); w.focus(); w.print(); w.close();
+    });
+  });
+});
