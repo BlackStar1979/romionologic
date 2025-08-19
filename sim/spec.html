@@ -280,5 +280,24 @@ romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
 <!-- STRZAŁKA „DO GÓRY” -->
 <button id="toTop" aria-label="Wróć na górę">↑</button>
 
+<!-- MOBILE FAB + BOTTOM SHEET -->
+<button id="tocFab" aria-controls="tocSheet" aria-expanded="false">☰ Sekcje</button>
+<div id="sheetBackdrop" aria-hidden="true"></div>
+<div id="tocSheet" role="dialog" aria-modal="true" aria-label="Sekcje">
+  <h3>Sekcje</h3>
+  <nav>
+    <a href="#overview">Przegląd</a>
+    <a href="#schema">JSON Schema</a>
+    <a href="#examples">Przykłady</a>
+    <a href="#validation">Walidacja</a>
+    <a href="#errors">Błędy</a>
+    <a href="#cli">CLI</a>
+    <a href="#versioning">Wersjonowanie</a>
+    <a href="#security">Bezpieczeństwo</a>
+    <a href="#glossary">Glosariusz</a>
+    <a href="#feedback">Uwagi</a>
+  </nav>
+</div>
+
 </body>
 </html>
