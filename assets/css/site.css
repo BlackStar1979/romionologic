@@ -129,3 +129,20 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
   .toc-float{ display:none !important; }   /* chowamy panel boczny */
   #tocFab{ display:flex; }
 }
+
+/* --- fix: brak linii pod nav (już mamy) + mniejsze odstępy i bez poziomej kreski pod h2 --- */
+header.hero { border-bottom: 0 !important; }
+
+/* h2 w kartach: zero nadmiarowej przerwy i żadnych linii pod spodem */
+.card h2 { margin-top: 0 !important; border-bottom: 0 !important; padding-bottom: 0 !important; }
+
+/* globalnie trochę ciaśniej dla h2 poza kartami */
+h2 { margin-top: 16px !important; border-bottom: 0 !important; padding-bottom: 0 !important; }
+
+/* przycisk do góry – upewnij się, że widać */
+#toTop{
+  position:fixed; right:24px; bottom:24px; display:none;
+  width:44px; height:44px; border-radius:999px; border:1px solid var(--border);
+  background:#222; color:#fff; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.35); z-index:1002;
+}
+#toTop:hover{ background:#2a2a2a }
