@@ -130,9 +130,9 @@ pre code{ background:transparent; border:none; padding:0; color:#ddd }
 #tocSheet a{ display:block; padding:10px 8px; border-radius:8px; color:var(--text); text-decoration:none }
 #tocSheet a:hover{ background:#2f2f2f }
 
-@media (max-width: 900px){
-  .toc-float{ display:none !important; } /* chowamy panel boczny */
-  #tocFab{ display:flex; }
+@media (max-width: 1200px){
+  .toc-float{ display:none !important; } /* panel znika wcześniej */
+  #tocFab{ display:flex; }               /* pastylka pojawia się wcześniej */
 }
 
 /* ====== Footer ====== */
