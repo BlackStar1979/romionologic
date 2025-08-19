@@ -5,24 +5,30 @@
       ? fn()
       : document.addEventListener('DOMContentLoaded', fn);
 
-  // Print whole page
+  // Print whole page (przycisk pod formularzem)
   (function(){
     var btn = document.getElementById('printPage');
     if (btn) btn.addEventListener('click', function(){ window.print(); });
   })();
-  
+
   function esc(s){ return String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
   function $(sel, root){ return (root||document).querySelector(sel); }
   function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
 
   ready(function(){
 
-    /* ===== 1) highlight.js + KaTeX (bezpiecznie) ===== */
-    try {
-      if (window.hljs && typeof window.hljs.highlightAll === 'function') {
-        window.hljs.highlightAll();
-      }
-    } catch(e) {}
+    /* ===== 1) highlight.js (tylko statyczne <code>, bez data-src) + KaTeX ===== */
+    (function(){
+      try {
+        var nodes = document.querySelectorAll('code:not([data-src])');
+        for (var i=0; i<nodes.length; i++){
+          if (window.hljs && typeof window.hljs.highlightElement === 'function') {
+            try { window.hljs.highlightElement(nodes[i]); } catch(e){}
+          }
+        }
+      } catch(e){}
+    })();
+
     try {
       if (window.renderMathInElement) {
         window.renderMathInElement(document.body, {
@@ -65,7 +71,8 @@
           .then(function(res){ if (!res.ok) throw new Error('HTTP '+res.status); return res.text(); })
           .then(function(txt){
             codeEl.textContent = txt;
-            try { if (window.hljs) window.hljs.highlightElement(codeEl); } catch(e){}
+            try { codeEl.removeAttribute('data-highlighted'); } catch(e){}
+            try { if (window.hljs && typeof window.hljs.highlightElement === 'function') window.hljs.highlightElement(codeEl); } catch(e){}
           })
           .catch(function(e){
             codeEl.textContent = '// błąd ładowania '+url+': ' + (e.message || e);
