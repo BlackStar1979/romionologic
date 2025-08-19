@@ -1,19 +1,25 @@
 /* ====== DARK THEME (spójny z homepage) ====== */
 :root{
-  --bg:#1a1a1a; --text:#e0e0e0; --primary:#4a90e2; --secondary:#333;
-  --border:#444; --accent:#2b2b2b; --ok:#47c27c; --warn:#e6a23c;
-  --container:900px;
+  --bg:#1a1a1a; --text:#e0e0e0; --primary:#4a90e2;
+  --secondary:#333; --border:#444; --accent:#2b2b2b;
+  --ok:#47c27c; --warn:#e6a23c; --container:900px;
 }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;padding:0;font-family:'Lato',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial;
-  background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+body{
+  margin:0; padding:0;
+  font-family:'Lato',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial;
+  background:var(--bg); color:var(--text); line-height:1.8; overflow-x:hidden;
+}
 
 /* ====== Layout ====== */
-.container{max-width:var(--container);margin:40px auto;padding:20px;border-radius:8px;
-  background:var(--secondary);box-shadow:0 0 20px rgba(0,0,0,.5)}
+.container{
+  max-width:var(--container); margin:40px auto; padding:20px;
+  border-radius:8px; background:var(--secondary);
+  box-shadow:0 0 20px rgba(0,0,0,.5);
+}
 .wrap{display:block}
 .columns{display:block}
 section{scroll-margin-top:90px}
@@ -23,24 +29,32 @@ header.hero{ text-align:center; border-bottom:0; padding-bottom:20px; margin-bot
 header.hero h1{ color:var(--primary); font-size:2.5em; margin:0 }
 header.hero .subtitle{ margin:8px 0 0; color:#cfcfcf; font-size:1.1em }
 nav.hero{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:20px }
-nav.hero a{ font-size:.95em; background:#2a2a2a; padding:6px 10px; border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none }
+nav.hero a{
+  font-size:.95em; background:#2a2a2a; padding:6px 10px;
+  border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none;
+}
 nav.hero a:hover{ background:#2f2f2f }
 nav.hero a[aria-current="page"]{ text-decoration:underline }
 
 /* ====== Cards, banners, boxes ====== */
-.card{ background:var(--accent); border:1px solid var(--border); border-radius:8px; padding:16px 20px }
+.card{
+  background:var(--accent); border:1px solid var(--border);
+  border-radius:8px; padding:16px 20px; margin:18px 0;
+}
 .info{ background:var(--accent); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin:18px 0 }
-.teza{ background:rgba(74,144,226,.1); border:1px solid #3a5c82; color:#d9e9ff; padding:12px 14px; border-radius:8px; }
-
-/* ====== TOC ====== */
-.toc{ position:sticky; top:20px }
-.toc strong{ display:block; margin-bottom:8px }
-.toc nav a{ display:block; padding:6px 8px; border-radius:6px; color:var(--text); text-decoration:none }
-.toc nav a:hover{ background:#2f2f2f }
+.teza{
+  background:rgba(74,144,226,.1); border:1px solid #3a5c82; color:#d9e9ff;
+  padding:12px 14px; border-radius:8px; margin-bottom:18px;
+}
 
 /* ====== Typografia ====== */
-h1{color:var(--primary)} h2{color:var(--primary); font-size:1.8em; border-bottom:1px solid var(--border); padding-bottom:10px; margin-top:40px}
-h3{color:var(--text); font-size:1.3em; margin-top:28px}
+h1{ color:var(--primary) }
+h2{
+  color:var(--primary); font-size:1.8em;
+  margin:16px 0 10px; padding:0; border:0; /* bez poziomej kreski i zbity odstęp */
+}
+.card h2{ margin-top:0; } /* zero przerwy na początku karty */
+h3{ color:var(--text); font-size:1.3em; margin:18px 0 8px }
 a{ color:var(--primary); text-decoration:none } a:hover{text-decoration:underline}
 kbd,code{ background:#2a2a2a; border:1px solid var(--border); border-radius:4px; padding:0 .3em }
 
@@ -49,35 +63,29 @@ kbd,code{ background:#2a2a2a; border:1px solid var(--border); border-radius:4px;
 .grid-3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px }
 
 /* ====== Code blocks ====== */
-pre{ background:#1e1e1e; border:1px solid #3a3a3a; border-radius:6px; padding:14px; line-height:1.5; overflow-x:auto; white-space:pre }
+pre{
+  background:#1e1e1e; border:1px solid #3a3a3a; border-radius:6px;
+  padding:14px; line-height:1.5; overflow-x:auto; white-space:pre;
+}
 pre code{ background:transparent; border:none; padding:0; color:#ddd }
 .code-toolbar{ display:flex; gap:8px; margin-bottom:8px }
-.code-toolbar button{ appearance:none; border:1px solid var(--border); background:#222; color:#ddd; font-size:.85em; padding:6px 10px; border-radius:6px; cursor:pointer }
+.code-toolbar button{
+  appearance:none; border:1px solid var(--border); background:#222; color:#ddd;
+  font-size:.85em; padding:6px 10px; border-radius:6px; cursor:pointer;
+}
 .code-toolbar button:hover{ background:#2a2a2a }
 
-/* ====== GH status (bez proponowania treści) ====== */
+/* ====== GH status ====== */
 .gh-status{ list-style:none; padding:0; margin:0 }
-.gh-status li{ display:flex; align-items:center; gap:.5rem; padding:.5rem .75rem; border:1px dashed var(--border); border-radius:.5rem; margin-bottom:.5rem; background:#262626 }
+.gh-status li{
+  display:flex; align-items:center; gap:.5rem; padding:.5rem .75rem;
+  border:1px dashed var(--border); border-radius:.5rem; margin-bottom:.5rem; background:#262626;
+}
 .gh-status .path{ font-family:ui-monospace,Menlo,Consolas,monospace }
 .gh-status .result{ margin-left:auto; font-weight:600 }
 .gh-status .ok{ color:var(--ok) } .gh-status .warn{ color:var(--warn) } .gh-status .err{ color:#f44336 }
 
-/* ====== Footer ====== */
-footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
-
-/* ====== Print ====== */
-@media print{
-  @page{ size:A4; margin:20mm 15mm }
-  body{ background:#fff !important; color:#000 !important; font-size:11pt; line-height:1.4 }
-  .container{ max-width:100% !important; box-shadow:none !important; border:none !important; margin:0 !important; padding:0 !important }
-  h1,h2,h3,strong{ color:#000 !important } h2{ border-bottom:1px solid #ccc !important }
-  nav.hero,.code-toolbar,footer{ display:none !important }
-  .card,.info,.teza{ background:#f0f0f0 !important; border:1px solid #ccc !important }
-  pre{ background:#f5f5f5 !important; border:1px solid #ccc !important; white-space:pre-wrap !important; word-break:break-all !important }
-  code,kbd{ background:#f5f5f5 !important; border:1px solid #ccc !important; color:#000 !important }
-}
-
-/* ====== Floating TOC ====== */
+/* ====== Floating TOC (desktop) ====== */
 .toc-float{
   position:fixed; right:24px; top:120px; width:220px; max-height:60vh; overflow:auto;
   background:var(--accent); border:1px solid var(--border); border-radius:10px; padding:12px;
@@ -86,7 +94,7 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 .toc-float strong{display:block;margin:0 0 8px;color:#cfd8e3}
 .toc-float nav a{display:block;padding:6px 8px;border-radius:6px;color:var(--text);text-decoration:none}
 .toc-float nav a:hover{background:#2f2f2f}
-.toc-float nav a[aria-current="true"]{outline:2px solid var(--primary);}
+.toc-float nav a[aria-current="true"]{outline:2px solid var(--primary)}
 
 /* na wąskich ekranach – kompaktowy tryb */
 @media (max-width:1100px){
@@ -97,12 +105,12 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 #toTop{
   position:fixed; right:24px; bottom:24px; display:none;
   width:44px; height:44px; border-radius:999px; border:1px solid var(--border);
-  background:#222; color:#fff; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.35);
+  background:#222; color:#fff; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.35); z-index:1002;
 }
-#toTop:hover{background:#2a2a2a}
+#toTop:hover{ background:#2a2a2a }
 @media (max-width:1100px){ #toTop{ right:12px; bottom:12px } }
 
-/* ===== Mobile TOC: FAB + bottom-sheet ===== */
+/* ====== Mobile TOC: FAB + bottom-sheet ====== */
 #tocFab{
   position:fixed; right:24px; bottom:84px; display:none;
   align-items:center; gap:.5rem; padding:.6rem .85rem;
@@ -111,9 +119,7 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 }
 #tocFab:active{ transform:translateY(1px) }
 
-#sheetBackdrop{
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000;
-}
+#sheetBackdrop{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000 }
 #tocSheet{
   display:none; position:fixed; left:0; right:0; bottom:0; z-index:1001;
   background:var(--accent); border-top-left-radius:16px; border-top-right-radius:16px;
@@ -124,26 +130,23 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 #tocSheet a{ display:block; padding:10px 8px; border-radius:8px; color:var(--text); text-decoration:none }
 #tocSheet a:hover{ background:#2f2f2f }
 
-/* Widoczność: desktop vs mobile */
 @media (max-width: 900px){
-  .toc-float{ display:none !important; }   /* chowamy panel boczny */
+  .toc-float{ display:none !important; } /* chowamy panel boczny */
   #tocFab{ display:flex; }
 }
 
+/* ====== Footer ====== */
+footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 
-/* --- fix: brak linii pod nav (już mamy) + mniejsze odstępy i bez poziomej kreski pod h2 --- */
-header.hero { border-bottom: 0 !important; }
-
-/* h2 w kartach: zero nadmiarowej przerwy i żadnych linii pod spodem */
-.card h2 { margin-top: 0 !important; border-bottom: 0 !important; padding-bottom: 0 !important; }
-
-/* globalnie trochę ciaśniej dla h2 poza kartami */
-h2 { margin-top: 16px !important; border-bottom: 0 !important; padding-bottom: 0 !important; }
-
-/* przycisk do góry – upewnij się, że widać */
-#toTop{
-  position:fixed; right:24px; bottom:24px; display:none;
-  width:44px; height:44px; border-radius:999px; border:1px solid var(--border);
-  background:#222; color:#fff; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.35); z-index:1002;
+/* ====== Print ====== */
+@media print{
+  @page{ size:A4; margin:20mm 15mm }
+  body{ background:#fff !important; color:#000 !important; font-size:11pt; line-height:1.4 }
+  .container{ max-width:100% !important; box-shadow:none !important; border:none !important; margin:0 !important; padding:0 !important }
+  h1,h2,h3,strong{ color:#000 !important }
+  h2{ border-bottom:1px solid #ccc !important; padding-bottom:10px !important }
+  nav.hero,.code-toolbar,footer{ display:none !important }
+  .card,.info,.teza{ background:#f0f0f0 !important; border:1px solid #ccc !important }
+  pre{ background:#f5f5f5 !important; border:1px solid #ccc !important; white-space:pre-wrap !important; word-break:break-all !important }
+  code,kbd{ background:#f5f5f5 !important; border:1px solid #ccc !important; color:#000 !important }
 }
-#toTop:hover{ background:#2a2a2a }
