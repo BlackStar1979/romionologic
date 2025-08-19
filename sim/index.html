@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- =================================================================== -->
+    <!-- Podstawowe Ustawienia i Metadane -->
+    <!-- =================================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROMION SIM™ — Symulator Hiperrelacji (α)</title>
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="canonical" href="https://romionologic.neocities.org/sim">
+
+    <!-- =================================================================== -->
+    <!-- SEO i Podglądy w Mediach Społecznościowych -->
+    <!-- =================================================================== -->
+    <meta name="description" content="ROMION SIM™ — lekki symulator hipergrafów romionowych: reguły transformacji, inwarianty, metryka emergentna i eksperymenty badawcze.">
+    <meta name="robots" content="index,follow">
+    <meta property="og:title" content="ROMION SIM™ — Symulator Hiperrelacji (α)">
+    <meta property="og:description" content="Silnik do badania dynamiki hiperrelacji: przepisy lokalne, stabilne wzorce i metryki emergentne.">
+    <meta property="og:url" content="https://romionologic.neocities.org/sim">
+    <meta property="og:site_name" content="ROMION O'LOGIC™">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pl_PL">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="ROMION SIM™ — Symulator Hiperrelacji (α)">
+    <meta name="twitter:description" content="Silnik do badania dynamiki hiperrelacji: przepisy lokalne, stabilne wzorce i metryki emergentne.">
+
+    <!-- =================================================================== -->
+    <!-- Google Analytics -->
+    <!-- =================================================================== -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-71LL850G1L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-71LL850G1L');
+    </script>
+
+    <!-- =================================================================== -->
+    <!-- Czcionki i Style CSS (zgodne ze stroną główną) -->
+    <!-- =================================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+    </noscript>
+
+    <style>
+        :root {
+            --bg-color: #1a1a1a; --text-color: #e0e0e0; --primary-color: #4a90e2;
+            --secondary-color: #333; --border-color: #444; --accent-color: #2b2b2b;
+            --ok-color: #47c27c; --warn-color: #e6a23c;
+        }
+        html { scroll-behavior: smooth; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+        * { box-sizing: border-box; }
+        body { font-family: 'Lato', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.8; margin: 0; padding: 0; }
+        section { scroll-margin-top: 90px; }
+        a { color: var(--primary-color); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 6px; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+        .sr-only-focusable:active, .sr-only-focusable:focus { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; white-space: normal; }
+        .container { max-width: 900px; margin: 40px auto; padding: 20px; border-radius: 8px; background-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        h1 { color: var(--primary-color); font-size: 2.5em; margin: 0; }
+        h2 { color: var(--primary-color); font-size: 1.8em; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 40px; }
+        h3 { color: var(--text-color); font-size: 1.3em; margin-top: 28px; }
+        p, li { font-size: 1.06em; font-weight: 300; }
+        strong { font-weight: 700; color: #f0f0f0; }
+        header { text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 20px; }
+        .subtitle { margin: 8px 0 0 0; color: #cfcfcf; font-size: 1.1em; }
+        nav { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        nav a { font-size: .95em; background: #2a2a2a; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px; }
+        nav a:hover { background: #2f2f2f; }
+        nav a.active, nav a[aria-current="true"] { text-decoration: underline; }
+        .info-banner { background: var(--accent-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; margin: 18px 0; }
+        .card { background: var(--accent-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1px 20px 16px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .code-block { position: relative; }
+        pre { background: #1e1e1e; border: 1px solid #3a3a3a; border-radius: 6px; padding: 14px; line-height: 1.5; overflow-x: auto; white-space: pre; }
+        pre code { border: none; padding: 0; background: transparent; }
+        .code-actions { position:absolute; top:6px; right:6px; display:flex; gap:6px; z-index:2; background:rgba(0,0,0,.35); backdrop-filter:saturate(120%) blur(2px); border:1px solid #3a3a3a; border-radius:8px; padding:4px; }
+        .code-actions button { appearance:none; border:1px solid var(--border-color); background:#222; color:#ddd; font-size:.8em; padding:6px 8px; border-radius:6px; cursor:pointer; }
+        .code-actions button:hover { background:#2a2a2a }
+        .code-actions small { color:#9ad18b; margin-left:6px; align-self:center; font-size: 0.8em; }
+        .tag { display: inline-block; padding: .15em .5em; border: 1px solid var(--border-color); border-radius: 999px; background: #2a2a2a; font-size: .9em; margin-right: 6px; }
+        .cta-section { background-color: #252525; padding: 30px; margin-top: 40px; border-radius: 8px; text-align: center; }
+        .cta-section form { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .cta-section textarea, .cta-section input[type="email"] { padding: 12px; border: 1px solid var(--border-color); border-radius: 5px; background-color: #333; color: var(--text-color); width: 100%; max-width: 450px; font-size: 1em; }
+        .cta-section .button-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .cta-section button, .download-btn { padding: 12px 25px; border: none; border-radius: 5px; background-color: var(--primary-color); color: white; font-size: 1em; cursor: pointer; transition: background-color 0.3s, transform 0.15s ease, filter 0.15s ease; }
+        .download-btn:hover, .cta-section button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+        .download-btn:active, .cta-section button:active { transform: translateY(0); filter: none; }
+        #form-status { margin-top: 15px; font-weight: bold; }
+        footer { text-align: center; margin-top: 40px; font-size: 0.95em; color: #b3b3b3; }
+        footer .neocities-button { margin-top: 15px; display: inline-block; border: 1px solid var(--border-color); border-radius: 4px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        footer .neocities-button:hover { transform: scale(1.05); box-shadow: 0 0 10px rgba(74, 144, 226, 0.3); }
+        footer .neocities-button img { display: block; }
+        
+        @media print {
+            @page { size: A4; margin: 20mm 15mm; }
+            body { background: #ffffff !important; color: #000000 !important; font-size: 11pt; line-height: 1.4; }
+            .container { max-width: 100% !important; box-shadow: none !important; border: none !important; margin: 0 !important; padding: 0 !important; }
+            h1, h2, h3, strong { color: #000000 !important; }
+            h1 { font-size: 24pt; }
+            h2 { font-size: 18pt; border-bottom: 1px solid #cccccc !important; }
+            h3 { font-size: 14pt; }
+            a { color: #0000ff !important; text-decoration: underline !important; }
+            h2, h3, blockquote, .card, .info-banner, .grid { break-inside: avoid; }
+            ul, ol { break-inside: avoid; }
+            nav, .cta-section, footer, .code-actions { display: none !important; }
+            .info-banner, .card { background: #f0f0f0 !important; border: 1px solid #cccccc !important; }
+            pre { background: #f5f5f5 !important; border: 1px solid #cccccc !important; white-space: pre-wrap !important; word-break: break-all !important; }
+            code, kbd { background: #f5f5f5 !important; border: 1px solid #cccccc !important; color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+<a href="#main-content" class="sr-only sr-only-focusable">Przejdź do treści</a>
+
+<div class="container" id="content-to-capture">
+    <header>
+        <h1>ROMION SIM™</h1>
+        <p class="subtitle">Symulator hiperrelacji romionowych — wersja α (prototyp badawczy)</p>
+        <nav aria-label="Nawigacja">
+            <a href="/">Strona główna</a>
+            <a href="/axioms">Aksjomaty</a>
+            <a href="/sim" aria-current="true">ROMION SIM™</a>
+            <a href="/sim/spec">ROMION SIM™ — Specyfikacja</a>
+            <a href="#about">O projekcie</a>
+            <a href="#install">Instalacja</a>
+            <a href="#api">API</a>
+            <a href="#example">Przykład</a>
+            <a href="#roadmap">Roadmapa</a>
+            <a href="#faq">FAQ</a>
+            <a href="#feedback">Uwagi</a>
+        </nav>
+    </header>
+
+    <main id="main-content" role="main">
+        <section id="about" class="info-banner">
+            <p><strong>Cel:</strong> dostarczyć minimalny, otwarty silnik do badania dynamiki <em>hipergrafu romionowego</em> i lokalnych reguł transformacji (<code>τ</code>), z pomiarem <em>inwariantów</em> i wyprowadzaniem <em>metryki emergentnej</em>.</p>
+            <p style="font-size: 0.9em; color: #bdbdbd; margin-bottom: 0;">ROMION SIM™ jest narzędziem eksperymentalnym. Interfejs i nazwy modułów w wersji α mogą ulec zmianie.</p>
+        </section>
+
+        <section id="install">
+            <h2>Instalacja i Uruchomienie</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Wymagania</h3>
+                    <ul>
+                        <li>Python 3.10+ lub Julia 1.10+ (docelowo oba backendy)</li>
+                        <li>Brak kompilacji C/C++ — prototyp jest czysto wysokopoziomowy</li>
+                    </ul>
+                    <span class="tag">Open Source (wkrótce)</span>
+                    <span class="tag">MIT/Apache-2.0 (propozycja)</span>
+                </div>
+                <div class="card">
+                    <h3>Szybki start (CLI — koncept)</h3>
+                    <pre aria-label="Szybki start z linii komend"><code># Python (po publikacji repo)
+pip install romion-sim
+
+# Uruchom przykładowy eksperyment
+romion-sim run examples/loop_stability.yaml --steps 500</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="api">
+            <h2>Minimalne API (wersja α)</h2>
+            <div class="card">
+                <h3>Struktury Danych</h3>
+                <ul>
+                    <li><code>Hypergraph</code>: wierzchołki <code>V</code>, hiperrelacje <code>E</code>.</li>
+                    <li><code>Rule</code>: lokalny przepis <code>pattern → rewrite</code>.</li>
+                    <li><code>InvariantProbe</code>: funkcje <code>f(H) → 𝕀</code> (np. klasy pętli).</li>
+                    <li><code>EmergentMetric</code>: funkcjonał „kosztu transformacji” <code>dem(x,y)</code>.</li>
+                </ul>
+                <h3>Operacje (Pseudokod w Pythonie)</h3>
+                <pre aria-label="Pseudokod API"><code>H = Hypergraph.from_edges([(["a","b","c"], {"type":"R3"})])
+rule = Rule(pattern="R3(x,y,z)", rewrite="R3(x,z,w)")
+sim = Simulator(H, [rule], probes=[loops, degree_dist])
+
+for step in sim.run(max_steps=1000):
+    if stable(sim.measure()): break
+
+d = sim.metric("dem").between("a","w")</code></pre>
+            </div>
+        </section>
+
+        <section id="example">
+            <h2>Przykład Eksperymentu: Stabilność Pętli</h2>
+            <div class="card">
+                <h3>Konfiguracja (YAML)</h3>
+                <pre aria-label="Przykładowa konfiguracja YAML"><code>hypergraph:
+  edges:
+    - { nodes: [A,B,C], attrs: {type: R3} }
+    - { nodes: [C,D,E,F], attrs: {type: R4} }
+
+rules:
+  - name: loop-grow
+    when: { match: {type: R3} }
+    do:
+      remove: { nodes: [x,y,z], type: R3 }
+      add:    { nodes: [x,z,w], type: R3 }
+    guard:
+      invariants: { preserve_loop_class: true }
+
+probes: [loops, degree_dist, entropy]
+run: { steps: 5000, schedule: random }</code></pre>
+            </div>
+        </section>
+
+        <section id="roadmap">
+            <h2>Roadmapa (α → β)</h2>
+            <div class="card">
+                <ol>
+                    <li><strong>Silnik β:</strong> wybór strategii stosowania reguł, profile wydajności.</li>
+                    <li><strong>Inwarianty rozszerzone:</strong> klasy homotopii, wskaźniki spektralne.</li>
+                    <li><strong>Wizualizacja:</strong> interaktywny podgląd stanu i historii.</li>
+                    <li><strong>Publikacja:</strong> preprint i repozytorium open-source.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="faq">
+            <h2>FAQ</h2>
+            <div class="grid">
+                <div class="card"><h3>Czy ROMION SIM™ to komputer kwantowy?</h3><p>Nie. To ontologiczny symulator hiperrelacji. „Kwantowość” pojawia się wtórnie.</p></div>
+                <div class="card"><h3>Jak weryfikować „cząstki”?</h3><p>Przez stabilność inwariantów <code>𝕀</code> i odporność na lokalne zakłócenia.</p></div>
+                <div class="card"><h3>Czy metryka <code>dem</code> jest unikalna?</h3><p>Nie musi być. Zależy od kosztów transformacji. Porównujemy klasy metryk.</p></div>
+                <div class="card"><h3>Licencja i wkład?</h3><p>Plan: MIT/Apache-2.0. Wkład przez PR/Issues po upublicznieniu repo.</p></div>
+            </div>
+        </section>
+
+        <section id="feedback" class="cta-section">
+            <h3>Dołącz / Zostaw Uwagi</h3>
+            <p>Chcesz przetestować wersję α lub pomóc w rozwoju backendu w Julii? Daj znać.</p>
+            <form id="contact-form" action="https://formspree.io/f/xpwlelpg" method="POST" aria-label="Wyślij uwagi do ROMION SIM™">
+                <input type="email" name="email" placeholder="Twój e-mail (opcjonalnie)" autocomplete="email">
+                <textarea name="message" rows="5" placeholder="Krótko opisz, w co chcesz się włączyć…" required></textarea>
+                <div class="button-group">
+                    <button type="submit">Wyślij</button>
+                    <button type="button" class="download-btn" onclick="window.print()">Zapisz jako PDF</button>
+                </div>
+            </form>
+            <p id="form-status" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© ROMION O'LOGIC™ — ROMION SIM™ (ALPHA). <a href="/">Powrót na stronę główną</a>.</p>
+        <a href="https://neocities.org" target="_blank" rel="noopener noreferrer" class="neocities-button" title="Hosted by Neocities">
+            <img src="https://romionologic.neocities.org/neocities.png" alt="Hosted by Neocities" width="88" height="31">
+        </a>
+    </footer>
+</div>
+
+<!-- =================================================================== -->
+<!-- Skrypty JavaScript -->
+<!-- =================================================================== -->
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+    /**
+     * Obsługa formularza kontaktowego Formspree.
+     */
+    const form = document.getElementById('contact-form');
+    if (form) {
+        const formStatus = document.getElementById('form-status');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    formStatus.textContent = "Dziękuję! Odezwiemy się, jeśli podałeś(-aś) e-mail.";
+                    formStatus.style.color = "var(--ok-color)";
+                    form.reset();
+                } else {
+                    response.json().then(data => {
+                        formStatus.textContent = data.errors ? data.errors.map(e => e.message).join(', ') : 'Ups! Coś poszło nie tak.';
+                        formStatus.style.color = "#f44336";
+                    });
+                }
+            }).catch(() => {
+                formStatus.textContent = "Błąd sieci – spróbuj ponownie.";
+                formStatus.style.color = "#f44336";
+            });
+        });
+    }
+
+    /**
+     * "Scroll-spy" - podświetlanie aktywnego linku w nawigacji podczas przewijania.
+     */
+    const navLinks = Array.from(document.querySelectorAll('nav a[href^="#"]'));
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    if (sections.length > 0) {
+        const onScroll = () => {
+            const fromTop = window.scrollY + 120;
+            let activeId = null;
+            for (const sec of sections) { if (sec.offsetTop <= fromTop) activeId = '#' + sec.id; }
+            navLinks.forEach(a => { a.toggleAttribute('aria-current', a.getAttribute('href') === activeId); });
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+    }
+    
+    /**
+     * Pasek akcji dla bloków kodu
+     */
+    const blocks = Array.from(document.querySelectorAll('pre'));
+    blocks.forEach((pre, idx) => {
+        const codeEl = pre.querySelector('code');
+        if (!codeEl) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+        const bar = document.createElement('div');
+        bar.className = 'code-actions';
+        const btnCopy = document.createElement('button');
+        btnCopy.type = 'button';
+        btnCopy.textContent = 'Kopiuj';
+        btnCopy.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(codeEl.textContent);
+            flash('Skopiowano');
+          } catch {
+            const ta = document.createElement('textarea');
+            ta.value = codeEl.textContent;
+            document.body.appendChild(ta);
+            ta.select(); document.execCommand('copy'); ta.remove();
+            flash('Skopiowano');
+          }
+        });
+        const btnSave = document.createElement('button');
+        btnSave.type = 'button';
+        btnSave.textContent = 'Zapisz';
+        btnSave.addEventListener('click', () => {
+          const blob = new Blob([codeEl.textContent], { type: 'text/plain;charset=utf-8' });
+          const a = document.createElement('a');
+          const nameGuess = guessName(codeEl.textContent, idx);
+          a.href = URL.createObjectURL(blob);
+          a.download = nameGuess;
+          document.body.appendChild(a);
+          a.click();
+          URL.revokeObjectURL(a.href);
+          a.remove();
+        });
+        const btnWrap = document.createElement('button');
+        btnWrap.type = 'button';
+        btnWrap.textContent = 'Zawijaj';
+        let wrapped = false;
+        pre.style.whiteSpace = 'pre';
+        btnWrap.addEventListener('click', () => {
+          wrapped = !wrapped;
+          pre.style.whiteSpace = wrapped ? 'pre-wrap' : 'pre';
+          btnWrap.textContent = wrapped ? 'Nie zawijaj' : 'Zawijaj';
+        });
+        bar.append(btnCopy, btnSave, btnWrap);
+        wrap.appendChild(bar);
+        function flash(msg){
+          const ok = document.createElement('small');
+          ok.textContent = msg;
+          bar.appendChild(ok);
+          setTimeout(()=> ok.remove(), 1600);
+        }
+        function guessName(text, i){
+          const isJSON = text.trim().startsWith('{') || text.includes('"spec_version"');
+          const isYAML = !isJSON && (/^[a-zA-Z_]+\s*:/m).test(text);
+          if(isJSON) return `spec-${i+1}.json`;
+          if(isYAML) return `spec-${i+1}.yaml`;
+          return `snippet-${i+1}.txt`;
+        }
+    });
+});
+</script>
+
+<!-- Dane Strukturalne (SoftwareApplication) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ROMION SIM",
+  "applicationCategory": "ScienceApplication",
+  "operatingSystem": "Cross-platform",
+  "softwareVersion": "0.1.0-alpha",
+  "description": "Symulator hipergrafów romionowych do badania lokalnych reguł transformacji, inwariantów i metryk emergentnych w ramach ontologii ROMION O'LOGIC™.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "name": "ROMION O'LOGIC™" }
+}
+</script>
+
+</body>
+</html>
