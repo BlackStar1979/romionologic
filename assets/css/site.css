@@ -102,6 +102,7 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 #toTop:hover{background:#2a2a2a}
 @media (max-width:1100px){ #toTop{ right:12px; bottom:12px } }
 
+
 /* ===== Mobile TOC: FAB + bottom-sheet ===== */
 #tocFab{
   position:fixed; right:24px; bottom:84px; display:none;
