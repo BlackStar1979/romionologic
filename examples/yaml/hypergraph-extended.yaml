@@ -1,1 +1,12 @@
-xxx
+hypergraph:
+  nodes: [A,B,C,D,E,F,G]
+  edges:
+    - {nodes:[A,B], attrs:{type:R2, w:1.0}}
+    - {nodes:[B,C,D], attrs:{type:R3}}
+    - {nodes:[D,E,F,G], attrs:{type:R4, tag:core}}
+hypergraph:
+  nodes: [A,B,C,D,E,F,G]
+  edges:
+    - {nodes:[A,B], attrs:{type:R2, w:1.0}}
+    - {nodes:[B,C,D], attrs:{type:R3}}
+    - {nodes:[D,E,F,G], attrs:{type:R4, tag:core}}
