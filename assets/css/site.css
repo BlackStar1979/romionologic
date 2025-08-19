@@ -162,3 +162,34 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 
 /* mniej luftu nad kontenerem */
 .container{ margin:24px auto; }   /* było 40px */
+
+/* ===== Tryb kompaktowy nagłówka tylko dla /sim/spec ===== */
+.page-spec header.hero{
+  padding-bottom:8px;        /* było ~20px */
+  margin-bottom:12px;        /* było ~20px */
+  border-bottom:0;
+}
+.page-spec header.hero h1{
+  font-size:2.1em;           /* było 2.5em */
+  margin:0 0 4px;
+}
+.page-spec header.hero .subtitle{
+  margin:0;                  /* było ~8px 0 0 */
+  font-size:1.0em;
+  color:#cfd8e3;
+}
+.page-spec nav.hero{
+  margin-top:10px;           /* było 20px */
+  gap:8px;
+}
+.page-spec nav.hero a{
+  font-size:.9em;            /* było .95em */
+  padding:4px 8px;           /* było 6px 10px */
+  border-radius:6px;
+}
+
+/* lekko ciaśniejszy banner tezy pod nagłówkiem */
+.page-spec .teza{
+  margin-top:8px;
+  padding:10px 12px;
+}
