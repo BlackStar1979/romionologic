@@ -58,16 +58,15 @@
     <img src="/thumb2.png" alt="miniatura2">
   </div>
 
-  <script>
-    // Ładowanie kodu zewnętrznego
-
-fetch('https://cdn.jsdelivr.net/gh/BlackStar1979/romionologic@main/examples/js/spec1.js')
-  .then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.text();
-  })
-  .then(txt => document.getElementById('example-code').textContent = txt)
-  .catch(err => document.getElementById('example-code').textContent = "Błąd ładowania: " + err);
+<script>
+  // Ładujemy z tej samej domeny: brak CORS i brak CSP-problemów
+  fetch('/examples/js/spec1.js', { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(txt => document.getElementById('example-code').textContent = txt)
+    .catch(err => document.getElementById('example-code').textContent = "Błąd ładowania: " + err.message);
 
     // Kopiowanie do schowka
     document.querySelector('.copy').addEventListener('click', () => {
