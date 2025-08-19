@@ -2,94 +2,681 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>ROMION O'LOGIC™ — Specyfikacja Symulatora</title>
+  <title>ROMION SIM™ — Specyfikacja formatu eksperymentów (α)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Specyfikacja ROMION SIM™ (α): format eksperymentów, JSON Schema, przykłady YAML/JSON, walidacja, CLI i dobre praktyki.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9fb; }
-    nav { background: #111; padding: 10px; }
-    nav a { color: #fff; margin: 0 10px; text-decoration: none; }
-    .teza { background: #e8f1fc; padding: 15px; font-weight: bold; color: #003366; }
-    .content { padding: 20px; max-width: 900px; margin: auto; }
-    .code-box { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 8px; position: relative; }
-    pre { margin: 0; overflow-x: auto; }
-    .buttons { margin-bottom: 10px; }
-    .buttons button { margin-right: 5px; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
-    .copy { background: #007acc; color: #fff; }
-    .save { background: #28a745; color: #fff; }
-    .print { background: #6c757d; color: #fff; }
-    @media print {
-      nav, .buttons { display: none; }
-      body { background: #fff; }
-      .code-box { color: #000; background: #fff; }
+    :root{
+      --bg:#f6f7fb; --text:#111; --muted:#666;
+      --ink:#0f172a; --panel:#ffffff; --border:#e5e7eb;
+      --primary:#4a90e2; --primary-ink:#003366;
+      --code-bg:#1e1f22; --code-ink:#eaeef3; --code-border:#2c2d31;
+      --btn:#2b2f36; --btn-ink:#fff;
+      --btn-copy:#0ea5e9; --btn-save:#22c55e; --btn-print:#6b7280;
+      --focus:#60a5fa;
+      --container:980px;
     }
-    .hidden-thumbs { display: none; }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; font-family: ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;
+      background:var(--bg); color:var(--text); line-height:1.65;
+    }
+
+    /* NAV */
+    nav.top{
+      background:#101216; color:#fff;
+      display:flex; gap:14px; align-items:center;
+      padding:10px 16px; position:sticky; top:0; z-index:20;
+    }
+    nav.top a{color:#fff;text-decoration:none;padding:6px 8px;border-radius:6px}
+    nav.top a:hover{background:#1b1f26}
+
+    /* Teza */
+    .teza{
+      background:#e8f1fc; color:var(--primary-ink);
+      padding:14px 16px; font-weight:600;
+    }
+
+    /* Layout */
+    .wrap{max-width:var(--container); margin:24px auto; padding:0 16px}
+    h1{margin:.2em 0 .4em;color:var(--ink)}
+    h2{margin-top:40px; padding-bottom:8px; border-bottom:1px solid var(--border); color:#0b3766}
+    h3{margin-top:18px}
+    p.note{color:var(--muted); font-size:.95em}
+
+    /* Cards, grids */
+    .card{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:16px}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px}
+    @media (max-width:980px){ .grid,.grid-3{grid-template-columns:1fr} }
+
+    /* Code box */
+    .code-box{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border);
+               border-radius:10px; padding:12px; position:relative; }
+    .code-toolbar{ display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap }
+    .code-toolbar button{
+      appearance:none; border:0; border-radius:8px; padding:7px 10px; cursor:pointer;
+      color:var(--btn-ink); background:var(--btn); font-size:.92em; display:inline-flex; align-items:center; gap:6px;
+    }
+    .code-toolbar .copy{ background:var(--btn-copy) }
+    .code-toolbar .save{ background:var(--btn-save) }
+    .code-toolbar .print{ background:var(--btn-print) }
+    .code-toolbar button:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+    pre{ margin:0; overflow-x:auto; white-space:pre; }
+    pre code{ font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono","Courier New",monospace;
+              font-size:.95em; line-height:1.55; }
+
+    /* TOC */
+    .toc{ position:sticky; top:64px; align-self:start }
+    .toc a{ display:block; color:#0b3766; text-decoration:none; padding:6px 8px; border-radius:6px }
+    .toc a.active{ background:#dbeafe }
+    .columns{ display:grid; grid-template-columns:220px 1fr; gap:18px }
+    @media (max-width:1100px){ .columns{grid-template-columns:1fr} .toc{position:static} }
+
+    /* A11y helpers */
+    a:focus-visible, button:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; border-radius:6px }
+
+    /* Print */
+    @media print{
+      nav.top, .code-toolbar, .toc{ display:none !important }
+      body{ background:#fff; color:#000 }
+      .wrap{ max-width:none }
+      .card{ border:0 }
+      .code-box{ color:#000; background:#fff; border:1px solid #000 }
+      h2{ border-color:#000 }
+      pre{ white-space:pre-wrap; word-break:break-word }
+    }
+
+    /* Hidden thumbnails for link previews */
+    .hidden-thumbs{ display:none }
   </style>
 </head>
 <body>
 
-  <nav>
+  <!-- NAV -->
+  <nav class="top" aria-label="Nawigacja">
     <a href="/">Manifest</a>
     <a href="/axioms">Aksjomaty</a>
     <a href="/sim">Symulator</a>
-    <a href="/sim/spec">Specyfikacja</a>
+    <a href="/sim/spec" aria-current="page">Specyfikacja</a>
   </nav>
 
+  <!-- TEZA -->
   <div class="teza">
-    Teza strony: Specyfikacja symulatora ROMION O’LOGIC™ stanowi formalny opis jego architektury i mechaniki działania.
+    Teza strony: Specyfikacja ROMION SIM™ definiuje format eksperymentów (hipergraf, reguły τ, sondy 𝕀, uruchomienie),
+    zasady walidacji i wersjonowania oraz minimalny zestaw narzędzi do pracy.
   </div>
 
-  <div class="content">
-    <h1>Specyfikacja Symulatora</h1>
-    <p>Na tej stronie testujemy ładowanie przykładowego kodu z pliku zewnętrznego.</p>
+  <main class="wrap" id="main">
+    <h1>ROMION SIM™ — Specyfikacja (α)</h1>
+    <p class="note">Ta wersja to <strong>0.1.0-alpha</strong>. YAML zalecany dla człowieka, JSON dla API/automatyzacji. Obie reprezentacje są izomorficzne.</p>
 
-    <div class="code-box">
-      <div class="buttons">
-        <button class="copy">📋 Kopiuj</button>
-        <button class="save">💾 Zapisz</button>
-        <button class="print">🖨️ Drukuj do PDF</button>
+    <div class="columns">
+      <!-- TOC -->
+      <aside class="toc card" aria-label="Spis treści">
+        <strong>Sekcje</strong>
+        <nav>
+          <a href="#overview">Przegląd</a>
+          <a href="#schema">JSON Schema</a>
+          <a href="#examples">Przykłady</a>
+          <a href="#validation">Walidacja</a>
+          <a href="#errors">Błędy</a>
+          <a href="#cli">CLI</a>
+          <a href="#versioning">Wersjonowanie</a>
+          <a href="#security">Bezpieczeństwo</a>
+          <a href="#glossary">Glosariusz</a>
+          <a href="#feedback">Uwagi</a>
+        </nav>
+      </aside>
+
+      <!-- CONTENT -->
+      <div>
+        <section id="overview" class="card" style="scroll-margin-top:90px">
+          <h2>Przegląd</h2>
+          <p><strong>Cel:</strong> Stabilny i jednoznaczny opis: <em>hipergrafu początkowego</em>, zbioru lokalnych reguł <kbd>τ</kbd>,
+             sond inwariantów <kbd>𝕀</kbd> oraz konfiguracji uruchomienia. Minimalne wymagania są zamknięte w JSON Schema.</p>
+          <ul>
+            <li><strong>Pliki wejściowe:</strong> <code>.yaml</code> lub <code>.json</code></li>
+            <li><strong>Walidacja:</strong> JSON Schema (draft 2020-12)</li>
+            <li><strong>Wersjonowanie:</strong> SemVer w polu <code>spec_version</code></li>
+          </ul>
+        </section>
+
+        <section id="schema" class="card" style="scroll-margin-top:90px">
+          <h2>Oficjalne JSON Schema (α)</h2>
+          <div class="code-box"
+               data-src="/examples/schema/romion-sim.alpha.json"
+               data-lang="json"
+               aria-label="Kod: JSON Schema">
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="save">💾 Zapisz</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
+            </div>
+            <pre><code>Ładowanie schematu…</code></pre>
+          </div>
+          <p class="note">Jeśli plik nie istnieje w repozytorium lub zawiera tylko „xxx”, zobaczysz stosowny komentarz oraz gotową propozycję treści do wklejenia.</p>
+        </section>
+
+        <section id="examples" class="card" style="scroll-margin-top:90px">
+          <h2>Przykłady (YAML/JSON)</h2>
+
+          <div class="grid">
+            <div>
+              <h3>Minimalny eksperyment (YAML)</h3>
+              <div class="code-box" data-src="/examples/yaml/minimal.yaml" data-lang="yaml" aria-label="Kod: Minimalny YAML">
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
+                </div>
+                <pre><code>Ładowanie…</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <h3>To samo (JSON)</h3>
+              <div class="code-box" data-src="/examples/json/minimal.json" data-lang="json" aria-label="Kod: Minimalny JSON">
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
+                </div>
+                <pre><code>Ładowanie…</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-3" style="margin-top:16px">
+            <div>
+              <h3>Rozszerzony hipergraf (YAML)</h3>
+              <div class="code-box" data-src="/examples/yaml/hypergraph-extended.yaml" data-lang="yaml" aria-label="Kod: Hipergraf">
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
+                </div>
+                <pre><code>Ładowanie…</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <h3>Sonda z parametrami (JSON)</h3>
+              <div class="code-box" data-src="/examples/json/probe.json" data-lang="json" aria-label="Kod: Probe">
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
+                </div>
+                <pre><code>Ładowanie…</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <h3>Metryka i koszty (JSON)</h3>
+              <div class="code-box" data-src="/examples/json/metric.json" data-lang="json" aria-label="Kod: Metryka">
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
+                </div>
+                <pre><code>Ładowanie…</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="margin-top:20px">Przykładowy skrypt (JS)</h3>
+          <div class="code-box" data-src="/examples/js/spec1.js" data-lang="js" aria-label="Kod: spec1.js">
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="save">💾 Zapisz</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
+            </div>
+            <pre><code>Ładowanie…</code></pre>
+          </div>
+        </section>
+
+        <section id="validation" class="card" style="scroll-margin-top:90px">
+          <h2>Walidacja</h2>
+          <ul>
+            <li>Użyj dowolnej biblioteki JSON Schema (draft 2020-12). YAML → JSON: zwykła serializacja.</li>
+            <li>Tryb <strong>strict</strong> – wymaga pełnej zgodności ze schematem; <strong>lenient</strong> – ostrzega na polach nieznanych.</li>
+            <li>Idempotencja: parse → export nie zmienia semantyki (kolejność pól dowolna).</li>
+          </ul>
+          <div class="code-box" data-lang="bash" aria-label="Kod: CLI przykłady">
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
+            </div>
+            <pre><code>romion-sim validate spec.yaml --strict
+romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
+          </div>
+        </section>
+
+        <section id="errors" class="card" style="scroll-margin-top:90px">
+          <h2>Kody błędów (α)</h2>
+          <div class="grid">
+            <div>
+              <h3>Walidacja</h3>
+              <ul>
+                <li><strong>RS-VAL-001</strong> — brak pola obowiązkowego (np. <code>run.steps</code>).</li>
+                <li><strong>RS-VAL-002</strong> — typ niezgodny ze schematem.</li>
+                <li><strong>RS-VAL-003</strong> — niedozwolone dodatkowe pola w trybie <em>strict</em>.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Semantyka</h3>
+              <ul>
+                <li><strong>RS-SEM-101</strong> — reguła usuwa nieistniejący hiperbrzeg.</li>
+                <li><strong>RS-SEM-102</strong> — złamanie inwariantu (np. <code>preserve_loop_class</code>).</li>
+                <li><strong>RS-SEM-103</strong> — cykl bez wyjścia (stagnacja/przesterowanie).</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Uruchomienie</h3>
+              <ul>
+                <li><strong>RS-RUN-201</strong> — nieznany <code>schedule</code>.</li>
+                <li><strong>RS-RUN-202</strong> — błąd eksportu (ścieżka/perm).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="cli" class="card" style="scroll-margin-top:90px">
+          <h2>Interfejs CLI (koncept)</h2>
+          <div class="code-box" data-lang="bash" aria-label="Kod: CLI opcje">
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
+            </div>
+            <pre><code>romion-sim run &lt;plik.yaml|json&gt; [opcje]
+
+Opcje:
+  --steps N           Nadpisz run.steps
+  --seed N            Ziarno RNG (powtórzenia)
+  --schedule NAME     Nadpisz run.schedule
+  --export key=path   Np. metrics=out.json,history=hist.json,final=state.json
+  --metric key=val    Przeciąż koszty metryki, np. add_R3=1.1</code></pre>
+          </div>
+          <p class="note">Dokładne flagi zostaną zamrożone w β.</p>
+        </section>
+
+        <section id="versioning" class="card" style="scroll-margin-top:90px">
+          <h2>Wersjonowanie i kompatybilność</h2>
+          <ul>
+            <li><strong>SemVer specyfikacji</strong> – <code>spec_version</code> w pliku eksperymentu.</li>
+            <li><strong>Kompatybilność wstecz</strong> – α → β: zachowujemy istniejące pola; deprecjacje ostrzegane (<em>lenient</em>).</li>
+            <li><strong>Stabilizacja</strong> – zamrożenie słowników (<code>probes</code>, <code>schedule</code>) w β.</li>
+          </ul>
+        </section>
+
+        <section id="security" class="card" style="scroll-margin-top:90px">
+          <h2>Bezpieczeństwo i dobre praktyki</h2>
+          <ul>
+            <li>Pliki specyfikacji są niewykonywalne (zakaz osadzania skryptów/komend).</li>
+            <li>Wartości tekstowe są danymi — brak interpolacji.</li>
+            <li>Tryb strict: odrzucaj URL-e w polach ścieżkowych.</li>
+            <li>Powtarzalność: zapisuj <code>seed</code> i wersję silnika.</li>
+          </ul>
+        </section>
+
+        <section id="glossary" class="card" style="scroll-margin-top:90px">
+          <h2>Glosariusz</h2>
+          <div class="grid-3">
+            <div><strong>Hipergraf</strong><br>Uogólnienie grafu: hiperbrzeg łączy n ≥ 2 węzły.</div>
+            <div><strong>Reguła (Rule)</strong><br>Lokalne przepisanie fragmentu hipergrafu.</div>
+            <div><strong>Inwariant</strong><br>Wielkość zachowywana/kontrolowana przez dynamikę.</div>
+            <div><strong>Metryka <code>d_em</code></strong><br>Koszt minimalnej sekwencji transformacji sprzęgającej wzorce.</div>
+            <div><strong>Schedule</strong><br>Strategia wyboru miejsca zastosowania reguły.</div>
+            <div><strong>Probe</strong><br>Sonda pomiarowa generująca komponent wektora 𝕀.</div>
+          </div>
+        </section>
+
+        <section id="feedback" class="card" style="scroll-margin-top:90px">
+          <h2>Uwagi do specyfikacji</h2>
+          <form id="contact-form" action="https://formspree.io/f/xpwlelpg" method="POST" aria-label="Wyślij uwagi">
+            <input type="email" name="email" placeholder="Twój e-mail (opcjonalnie)" autocomplete="email"
+                   style="padding:10px;border-radius:8px;border:1px solid var(--border);background:#fff;width:260px">
+            <input type="hidden" name="_subject" value="ROMION SIM™ — uwagi do specyfikacji">
+            <textarea name="message" rows="5" placeholder="Proponowany zapis/uwaga…"
+                      required
+                      style="display:block;width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid var(--border);background:#fff"></textarea>
+            <button type="submit" style="background:var(--primary);color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer">Wyślij</button>
+            <button type="button" id="printPage" style="margin-left:8px;background:#374151;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer">Drukuj stronę (PDF)</button>
+          </form>
+          <p id="form-status" class="note" style="margin-top:8px"></p>
+        </section>
       </div>
-      <pre><code id="example-code">Ładowanie...</code></pre>
     </div>
-  </div>
+  </main>
 
-  <!-- Ukryte miniatury PNG -->
+  <footer class="wrap" style="color:#6b7280;margin-bottom:40px">
+    © ROMION O'LOGIC™ — Specyfikacja ROMION SIM™ (ALPHA). <a href="/sim">Wróć do ROMION SIM™</a>.
+  </footer>
+
+  <!-- Ukryte miniatury PNG (dla podglądów linków itp.) -->
   <div class="hidden-thumbs">
-    <img src="/thumb1.png" alt="miniatura1">
-    <img src="/thumb2.png" alt="miniatura2">
+    <img src="/thumb1.png" alt="miniatura 1">
+    <img src="/thumb2.png" alt="miniatura 2">
   </div>
 
-<script>
-  // Ładujemy z tej samej domeny: brak CORS i brak CSP-problemów
-  fetch('/examples/js/spec1.js', { cache: 'no-store' })
-    .then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
-    .then(txt => document.getElementById('example-code').textContent = txt)
-    .catch(err => document.getElementById('example-code').textContent = "Błąd ładowania: " + err.message);
+  <script>
+    // ====== REKOMENDOWANE SNIPPETY (używane, gdy plik ma treść dokładnie "xxx") ======
+    const RECOMMENDED_SNIPPETS = {
+      "/examples/schema/romion-sim.alpha.json": `{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://romionologic.neocities.org/schemas/romion-sim.alpha.json",
+  "title": "ROMION SIM Experiment (alpha)",
+  "type": "object",
+  "required": ["spec_version","hypergraph","rules","probes","run"],
+  "properties": {
+    "spec_version": { "type":"string", "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-[0-9A-Za-z.-]+)?$" },
+    "metadata": {
+      "type":"object",
+      "properties":{
+        "name":{"type":"string"},
+        "author":{"type":"string"},
+        "created":{"type":"string","format":"date-time"},
+        "description":{"type":"string"}
+      },
+      "additionalProperties": false
+    },
+    "hypergraph": {
+      "type":"object",
+      "required":["edges"],
+      "properties":{
+        "nodes": {
+          "type":"array",
+          "items": { "anyOf":[{"type":"string"},{"type":"integer"}] },
+          "uniqueItems": true
+        },
+        "edges": {
+          "type":"array",
+          "items":{
+            "type":"object",
+            "required":["nodes"],
+            "properties":{
+              "nodes":{
+                "type":"array",
+                "minItems": 2,
+                "items":{"anyOf":[{"type":"string"},{"type":"integer"}]}
+              },
+              "attrs":{"type":"object","additionalProperties": true}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "rules": {
+      "type":"array",
+      "minItems": 1,
+      "items":{
+        "type":"object",
+        "required":["name","when","do"],
+        "properties":{
+          "name":{"type":"string"},
+          "when":{
+            "type":"object",
+            "properties":{
+              "match":{"type":"object","additionalProperties": true},
+              "guard":{"type":"object","additionalProperties": true}
+            },
+            "additionalProperties": false
+          },
+          "do":{
+            "type":"object",
+            "properties":{
+              "add":{"type":"array","items":{"type":"object","properties":{"nodes":{"type":"array","items":{"type":"string"},"minItems":2},"type":{"type":"string"},"attrs":{"type":"object"}},"required":["nodes"],"additionalProperties":false}},
+              "remove":{"type":"array","items":{"type":"object","properties":{"nodes":{"type":"array","items":{"type":"string"},"minItems":2},"type":{"type":"string"}},"required":["nodes"],"additionalProperties":false}}
+            },
+            "additionalProperties": false
+          },
+          "invariants": {
+            "type":"object",
+            "properties":{
+              "preserve_loop_class":{"type":"boolean"},
+              "bounded_degree":{"type":"integer","minimum":1}
+            },
+            "additionalProperties": true
+          },
+          "weight":{"type":"number","minimum":0}
+        },
+        "additionalProperties": false
+      }
+    },
+    "probes": {
+      "type":"array",
+      "items": { "anyOf":[
+        {"type":"string","enum":["loops","degree_dist","entropy","spectrum"]},
+        {"type":"object","properties":{"name":{"type":"string"},"params":{"type":"object"}},"required":["name"],"additionalProperties": false}
+      ]}
+    },
+    "run": {
+      "type":"object",
+      "required":["steps","schedule"],
+      "properties":{
+        "steps":{"type":"integer","minimum":1},
+        "seed":{"type":"integer"},
+        "schedule":{"type":"string","enum":["random-local","round-robin","priority"]},
+        "export":{"type":"object","properties":{"metrics":{"type":"string"},"history":{"type":"string"},"final":{"type":"string"}},"additionalProperties": false},
+        "metric":{"type":"object","properties":{"name":{"type":"string","default":"d_em"},"costs":{"type":"object"}},"additionalProperties": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}`,
 
-    // Kopiowanie do schowka
-    document.querySelector('.copy').addEventListener('click', () => {
-      const code = document.getElementById('example-code').textContent;
-      navigator.clipboard.writeText(code);
-      alert("Skopiowano do schowka!");
-    });
+      "/examples/yaml/minimal.yaml": `spec_version: 0.1.0-alpha
+metadata:
+  name: loop-stability
+  description: Test stabilności pętli
+hypergraph:
+  edges:
+    - nodes: [A, B, C]
+      attrs: {type: R3}
+    - nodes: [C, D, E, F]
+      attrs: {type: R4}
+rules:
+  - name: loop-grow
+    when:
+      match: {type: R3}
+    do:
+      remove: [{nodes:[x,y,z], type:R3}]
+      add:
+        - {nodes:[x,z,w], type:R3}
+        - {nodes:[y,w], type:R2}
+    invariants:
+      preserve_loop_class: true
+probes: [loops, degree_dist, entropy]
+run:
+  steps: 5000
+  schedule: random-local
+  export: {metrics: metrics.json}`,
 
-    // Zapis do pliku
-    document.querySelector('.save').addEventListener('click', () => {
-      const code = document.getElementById('example-code').textContent;
-      const blob = new Blob([code], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = "spec1.js";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+      "/examples/json/minimal.json": `{
+  "spec_version":"0.1.0-alpha",
+  "metadata":{"name":"loop-stability","description":"Test stabilności pętli"},
+  "hypergraph":{"edges":[
+    {"nodes":["A","B","C"],"attrs":{"type":"R3"}},
+    {"nodes":["C","D","E","F"],"attrs":{"type":"R4"}}
+  ]},
+  "rules":[
+    {"name":"loop-grow",
+     "when":{"match":{"type":"R3"}},
+     "do":{"remove":[{"nodes":["x","y","z"],"type":"R3"}],
+           "add":[{"nodes":["x","z","w"],"type":"R3"},
+                  {"nodes":["y","w"],"type":"R2"}]},
+     "invariants":{"preserve_loop_class":true}
+    }
+  ],
+  "probes":["loops","degree_dist","entropy"],
+  "run":{"steps":5000,"schedule":"random-local","export":{"metrics":"metrics.json"}}
+}`,
 
-    // Druk do PDF
-    document.querySelector('.print').addEventListener('click', () => {
-      window.print();
+      "/examples/yaml/hypergraph-extended.yaml": `hypergraph:
+  nodes: [A,B,C,D,E,F,G]
+  edges:
+    - {nodes:[A,B], attrs:{type:R2, w:1.0}}
+    - {nodes:[B,C,D], attrs:{type:R3}}
+    - {nodes:[D,E,F,G], attrs:{type:R4, tag:core}}`,
+
+      "/examples/json/probe.json": `{
+  "probes": [
+    "loops",
+    {"name":"spectrum","params":{"laplacian":"clique","k":8}}
+  ]
+}`,
+
+      "/examples/json/metric.json": `{
+  "run": {
+    "steps": 20000,
+    "schedule": "priority",
+    "metric": {
+      "name": "d_em",
+      "costs": {
+        "add_R3": 1.0,
+        "remove_R3": 1.2,
+        "add_R4": 1.6,
+        "remove_R4": 1.8
+      }
+    }
+  }
+}`,
+
+      "/examples/js/spec1.js": `console.log("Hello ROMION O'LOGIC™");`
+    };
+
+    // ====== TOOLING ======
+    const selectAll = (q,root=document)=>Array.from(root.querySelectorAll(q));
+
+    // Ładowanie plików do boxów
+    async function loadCodeBoxes(){
+      const boxes = selectAll('.code-box[data-src]');
+      await Promise.all(boxes.map(async box=>{
+        const path = box.getAttribute('data-src');
+        const lang = (box.getAttribute('data-lang')||'txt').toLowerCase();
+        const codeEl = box.querySelector('pre > code');
+        try{
+          const res = await fetch(path, {cache:'no-cache'});
+          if(!res.ok) throw new Error(res.status+' '+res.statusText);
+          let txt = await res.text();
+
+          // Jeśli treść dokładnie "xxx" → komentarz + rekomendacja
+          const trimmed = txt.trim();
+          if(trimmed === 'xxx'){
+            const suggestion = RECOMMENDED_SNIPPETS[path];
+            const msg = `# W pliku wykryto placeholder "xxx".
+# W repozytorium wstaw właściwą treść do: ${path}
+# Proponowana zawartość poniżej:\n\n` + (suggestion || '# (Brak zdefiniowanej rekomendacji dla tej ścieżki)');
+            codeEl.textContent = (lang==='json'||lang==='yaml') ? msg.replace(/^#/gm,'//') : msg;
+            if(suggestion){ codeEl.textContent += '\n' + suggestion; }
+          } else {
+            codeEl.textContent = txt;
+          }
+        }catch(err){
+          // Brak pliku / fetch error → komentarz
+          const comment = (lang==='json'||lang==='js') ? `// Dodaj ${path} do repozytorium GitHub projektu`
+                                                       : `# Dodaj ${path} do repozytorium GitHub projektu`;
+          codeEl.textContent = comment;
+        }
+      }));
+    }
+
+    // Kopiuj / Zapisz / Drukuj
+    function wireActions(){
+      document.addEventListener('click', async (e)=>{
+        const btn = e.target.closest('button'); if(!btn) return;
+        const box = e.target.closest('.code-box'); if(!box) return;
+        const code = box.querySelector('pre > code').textContent;
+
+        if(btn.classList.contains('copy')){
+          try{ await navigator.clipboard.writeText(code); btn.textContent='✅ Skopiowano'; setTimeout(()=>btn.textContent='📋 Kopiuj',1200); }
+          catch{ alert('Nie udało się skopiować.'); }
+        }
+        if(btn.classList.contains('save')){
+          const path = box.getAttribute('data-src') || 'snippet.txt';
+          const fname = path.split('/').pop() || 'snippet.txt';
+          const blob = new Blob([code], {type:'text/plain;charset=utf-8'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = fname; a.click();
+          URL.revokeObjectURL(url);
+        }
+        if(btn.classList.contains('print')){
+          window.print();
+        }
+      });
+
+      // Skróty: Ctrl/Cmd+C (kopiuj z aktywnego boxa – ostatni kliknięty), Ctrl/Cmd+S (zapis), Ctrl/Cmd+P (druk)
+      let lastBox = null;
+      selectAll('.code-box').forEach(b=>b.addEventListener('mousedown',()=>{ lastBox=b; }));
+      document.addEventListener('keydown',(ev)=>{
+        const mod = ev.metaKey || ev.ctrlKey;
+        if(!mod) return;
+        if(!lastBox) return;
+        const code = lastBox.querySelector('pre > code').textContent;
+        if(ev.key.toLowerCase()==='s'){ ev.preventDefault();
+          const path = lastBox.getAttribute('data-src') || 'snippet.txt';
+          const fname = path.split('/').pop() || 'snippet.txt';
+          const blob = new Blob([code], {type:'text/plain;charset=utf-8'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = fname; a.click();
+          URL.revokeObjectURL(url);
+        }
+        if(ev.key.toLowerCase()==='p'){ /* druk – nie blokujemy, nie trzeba preventDefault */ }
+        if(ev.key.toLowerCase()==='c'){ /* kopiuj — pozostawiamy natywnie */ }
+      });
+
+      // Druk całej strony (przycisk pod formularzem)
+      const printPage = document.getElementById('printPage');
+      if(printPage){ printPage.addEventListener('click',()=>window.print()); }
+    }
+
+    // Aktywny link TOC
+    function wireTOC(){
+      const links = selectAll('.toc nav a');
+      const secs = links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const onScroll = ()=>{
+        const y = window.scrollY + 120;
+        let active = null;
+        for(const s of secs){ if(s.offsetTop <= y) active = '#'+s.id; }
+        links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===active));
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, {passive:true});
+    }
+
+    // Formspree (krótki status)
+    (function(){
+      const form = document.getElementById('contact-form');
+      const statusEl = document.getElementById('form-status');
+      if(!form) return;
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch(form.action, {method:'POST', body:data, headers:{'Accept':'application/json'}})
+          .then(r=>{
+            if(r.ok){ statusEl.textContent='Dzięki! Zmiany zapiszemy w kolejnej rewizji specyfikacji.'; statusEl.style.color='#16a34a'; form.reset(); }
+            else r.json().then(d=>{
+              statusEl.textContent = d && d.errors ? d.errors.map(er=>er.message).join(', ') : 'Ups! Coś poszło nie tak.';
+              statusEl.style.color='#dc2626';
+            });
+          })
+          .catch(()=>{ statusEl.textContent='Błąd sieci — spróbuj ponownie.'; statusEl.style.color='#dc2626'; });
+      });
+    })();
+
+    // Init
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      await loadCodeBoxes();
+      wireActions();
+      wireTOC();
     });
   </script>
 </body>
