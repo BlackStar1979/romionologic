@@ -2,22 +2,37 @@ name: Deploy to Neocities
 
 on:
   push:
-    branches: [ main ]   # jeśli pracujesz na innej gałęzi, zmień tu
-  workflow_dispatch:      # ręczne odpalenie z zakładki Actions
+    branches: [ main ]
+    paths:
+      - '**/*.html'
+      - 'sim/**'
+      - 'examples/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    permissions:
+      contents: read
 
-      - name: Deploy
+    steps:
+      - name: Checkout
+      # standardowy checkout – repo będzie mieć .git, więc usuniemy je w kolejnym kroku
+        uses: actions/checkout@v4
+
+      - name: Remove files that must NOT be uploaded
+        run: |
+          rm -rf .git .github .gitignore .gitattributes
+
+      # bcomnes/deploy-to-neocities v2 – właściwe klucze: api_token, dist_dir, cleanup, protected_files
+      - name: Deploy to Neocities
         uses: bcomnes/deploy-to-neocities@v2
         with:
           api_token: ${{ secrets.NEOCITIES_API_TOKEN }}
-          neocities_site: romionologic      # dokładnie nazwa Twojej strony na Neocities
-          dist_dir: .                        # wysyłamy cały katalog repo (root)
-          clean: true                        # usuń z serwera pliki, których nie ma w repo (opcjonalnie)
+          dist_dir: .
+          cleanup: false
+          # chronimy favicon itp. (opcjonalne – możesz dopisać kolejne wzorce)
+          protected_files: |
+            favicon.svg
+            favicon.ico
