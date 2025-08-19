@@ -17,7 +17,7 @@ jobs:
       - name: Deploy
         uses: bcomnes/deploy-to-neocities@v2
         with:
-          api_token: ${{ secrets.NEOCITIES_API_KEY }}
+          api_token: ${{ secrets.NEOCITIES_API_TOKEN }}
           neocities_site: romionologic      # dokładnie nazwa Twojej strony na Neocities
           dist_dir: .                        # wysyłamy cały katalog repo (root)
           clean: true                        # usuń z serwera pliki, których nie ma w repo (opcjonalnie)
