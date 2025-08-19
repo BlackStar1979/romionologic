@@ -2,13 +2,12 @@ name: Deploy to Neocities
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - '**/*.html'
-      - 'sim/**'
-      - 'examples/**'
-      - '.github/workflows/deploy.yml'
-  workflow_dispatch:
+    branches: [ main ]      # każdy push na main uruchamia deploy
+  workflow_dispatch:         # ręczne odpalenie z UI
+
+concurrency:
+  group: neocities-deploy
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -18,21 +17,18 @@ jobs:
 
     steps:
       - name: Checkout
-      # standardowy checkout – repo będzie mieć .git, więc usuniemy je w kolejnym kroku
         uses: actions/checkout@v4
 
       - name: Remove files that must NOT be uploaded
         run: |
           rm -rf .git .github .gitignore .gitattributes
 
-      # bcomnes/deploy-to-neocities v2 – właściwe klucze: api_token, dist_dir, cleanup, protected_files
       - name: Deploy to Neocities
         uses: bcomnes/deploy-to-neocities@v2
         with:
           api_token: ${{ secrets.NEOCITIES_API_TOKEN }}
           dist_dir: .
           cleanup: false
-          # chronimy favicon itp. (opcjonalne – możesz dopisać kolejne wzorce)
           protected_files: |
             favicon.svg
             favicon.ico
