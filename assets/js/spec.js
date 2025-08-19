@@ -84,3 +84,47 @@ function isOnlyXs(s) {
 return /^[\sxX]+$/.test(s) && s.replace(/[\s]/g, '').length >= 3; // co najmniej trzy znaki x
 }
 })();
+
+// === Floating TOC + Scroll-to-top ===
+document.addEventListener('DOMContentLoaded', () => {
+  const toTop = document.getElementById('toTop');
+  const tocFloat = document.getElementById('toc-float');
+  const tocLinks = tocFloat ? Array.from(tocFloat.querySelectorAll('a[href^="#"]')) : [];
+
+  // Pokazuj strzałkę po przewinięciu
+  const showAt = 400;
+  const onScroll = () => {
+    if (toTop) toTop.style.display = (window.scrollY > showAt) ? 'block' : 'none';
+    // podświetlanie aktywnej sekcji
+    if (tocLinks.length) {
+      const fromTop = window.scrollY + 120;
+      let activeId = null;
+      for (const link of tocLinks) {
+        const sec = document.querySelector(link.getAttribute('href'));
+        if (sec && sec.offsetTop <= fromTop) activeId = link.getAttribute('href');
+      }
+      tocLinks.forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') === activeId));
+    }
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Smooth scroll do góry
+  if (toTop) {
+    toTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Smooth scroll dla linków TOC
+  tocLinks.forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', id);
+    });
+  });
+});
