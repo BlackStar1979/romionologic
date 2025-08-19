@@ -5,56 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ROMION SIM™ — Specyfikacja (α)</title>
 
+<!-- Czcionka jak na homepage -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap"></noscript>
 
-<!-- Style witryny -->
+<!-- Style (ciemne, spójne z homepage) -->
 <link rel="stylesheet" href="/assets/css/site.css" />
 
-
 <!-- highlight.js (CDN) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-LTF1Vf2X1tqYMD17gAUQ/Nl2vN2Yk2qK2CjSJq2XQn1Z3cC1t9f2zKfL5wQf9YSSbQjSev6b3Q3c1jVg4SQzYw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-2E3o0r2O6qY3iGqkL3m2d7Tqv6c1xw4bzkp1z7rQ1q0J6mYQv3Q4eZ3lN9cV7gO2n8a5v7mXnZ8wQ2b6Vj7pUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 
 <!-- KaTeX (CDN) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
 
-
-<!-- Skrypty strony spec -->
+<!-- Logika strony (twój plik) -->
 <script defer src="/assets/js/spec.js"></script>
 </head>
 <body>
-  <header class="site">
-    <div class="inner container">
-      <h1>ROMION O'LOGIC™</h1>
-      <nav class="primary" aria-label="Główna">
-        <a href="/">Wprowadzenie</a>
-        <a href="/">Rdzeń idei</a>
-        <a href="/">Zagadki</a>
-        <a href="/">Zastosowania</a>
-        <a href="/">Diagram</a>
-        <a href="/">Dołącz</a>
-        <a href="/">Roadmapa</a>
-        <a href="/manifest">Manifest</a>
-        <a href="/sim/spec" aria-current="page"><strong>Specyfikacja</strong></a>
-      </nav>
-    </div>
-  </header>
+  <a class="sr-only sr-only-focusable" href="#main">Przejdź do treści</a>
 
-  <main class="container">
+  <div class="container">
+    <header class="hero">
+      <h1>ROMION O'LOGIC™</h1>
+      <p class="subtitle">Nowa Perspektywa na Rzeczywistość</p>
+      <nav class="hero" aria-label="Główna nawigacja">
+        <a href="/">Wprowadzenie</a>
+        <a href="/axioms">Aksjomaty</a>
+        <a href="/sim">ROMION SIM™</a>
+        <a href="/sim/spec" aria-current="page">Specyfikacja</a>
+        <a href="/core">Rdzeń idei</a>
+        <a href="/riddles">Zagadki</a>
+        <a href="/apps">Zastosowania</a>
+        <a href="/diagram">Diagram</a>
+        <a href="/join">Dołącz</a>
+        <a href="/roadmap">Roadmapa</a>
+        <a href="/manifest">Manifest</a>
+      </nav>
+    </header>
+
     <!-- TEZA -->
     <div class="teza">
       Teza strony: Specyfikacja ROMION SIM™ definiuje format eksperymentów (hipergraf, reguły τ, sondy 𝕀, uruchomienie),
       zasady walidacji i wersjonowania oraz minimalny zestaw narzędzi do pracy.
     </div>
 
-    <!-- UWAGA: nie zagnieżdżamy <main> w <main>; poniżej jest <div> zamiast <main> -->
-    <div class="wrap" id="main">
+    <main class="wrap" id="main">
       <h1>ROMION SIM™ — Specyfikacja (α)</h1>
       <p class="note">Ta wersja to <strong>0.1.0-alpha</strong>. YAML zalecany dla człowieka, JSON dla API/automatyzacji. Obie reprezentacje są izomorficzne.</p>
 
@@ -78,7 +83,7 @@
 
         <!-- CONTENT -->
         <div>
-          <section id="overview" class="card" style="scroll-margin-top:90px">
+          <section id="overview" class="card">
             <h2>Przegląd</h2>
             <p><strong>Cel:</strong> Stabilny i jednoznaczny opis: <em>hipergrafu początkowego</em>, zbioru lokalnych reguł <kbd>τ</kbd>,
                sond inwariantów <kbd>𝕀</kbd> oraz konfiguracji uruchomienia. Minimalne wymagania są zamknięte w JSON Schema.</p>
@@ -89,121 +94,102 @@
             </ul>
           </section>
 
-          <section id="schema" class="card" style="scroll-margin-top:90px">
+          <section id="schema" class="card">
             <h2>Oficjalne JSON Schema (α)</h2>
-            <div class="code-box"
-                 data-src="/schemas/romion-sim.alpha.json"
-                 data-lang="json"
-                 aria-label="Kod: JSON Schema">
-              <div class="code-toolbar">
-                <button class="copy">📋 Kopiuj</button>
-                <button class="save">💾 Zapisz</button>
-                <button class="print">🖨️ Drukuj do PDF</button>
-              </div>
-              <pre><code>Ładowanie schematu…</code></pre>
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="save">💾 Zapisz</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
             </div>
+            <pre class="code"><code class="language-json" data-src="/schemas/romion-sim.alpha.json">Ładowanie schematu…</code></pre>
             <p class="note">
               Jeśli plik nie istnieje w repozytorium lub zawiera tylko „xxx”, zobaczysz wyłącznie komunikat o stanie
               (istnieje/pusty/„xxx”). <strong>Bez proponowania treści.</strong>
             </p>
           </section>
 
-          <section id="examples" class="card" style="scroll-margin-top:90px">
+          <section id="examples" class="card">
             <h2>Przykłady (YAML/JSON)</h2>
 
             <div class="grid">
               <div>
                 <h3>Minimalny eksperyment (YAML)</h3>
-                <div class="code-box" data-src="/examples/yaml/minimal.yaml" data-lang="yaml" aria-label="Kod: Minimalny YAML">
-                  <div class="code-toolbar">
-                    <button class="copy">📋 Kopiuj</button>
-                    <button class="save">💾 Zapisz</button>
-                    <button class="print">🖨️ Drukuj do PDF</button>
-                  </div>
-                  <pre><code>Ładowanie…</code></pre>
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
                 </div>
+                <pre><code class="language-yaml" data-src="/examples/yaml/minimal.yaml">Ładowanie…</code></pre>
               </div>
 
               <div>
                 <h3>To samo (JSON)</h3>
-                <div class="code-box" data-src="/examples/json/minimal.json" data-lang="json" aria-label="Kod: Minimalny JSON">
-                  <div class="code-toolbar">
-                    <button class="copy">📋 Kopiuj</button>
-                    <button class="save">💾 Zapisz</button>
-                    <button class="print">🖨️ Drukuj do PDF</button>
-                  </div>
-                  <pre><code>Ładowanie…</code></pre>
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
                 </div>
+                <pre><code class="language-json" data-src="/examples/json/minimal.json">Ładowanie…</code></pre>
               </div>
             </div>
 
-            <div class="grid-3" style="margin-top:16px">
+            <div class="grid" style="margin-top:16px">
               <div>
                 <h3>Rozszerzony hipergraf (YAML)</h3>
-                <div class="code-box" data-src="/examples/yaml/hypergraph-extended.yaml" data-lang="yaml" aria-label="Kod: Hipergraf">
-                  <div class="code-toolbar">
-                    <button class="copy">📋 Kopiuj</button>
-                    <button class="save">💾 Zapisz</button>
-                    <button class="print">🖨️ Drukuj do PDF</button>
-                  </div>
-                  <pre><code>Ładowanie…</code></pre>
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
                 </div>
+                <pre><code class="language-yaml" data-src="/examples/yaml/hypergraph-extended.yaml">Ładowanie…</code></pre>
               </div>
 
               <div>
                 <h3>Sonda z parametrami (JSON)</h3>
-                <div class="code-box" data-src="/examples/json/probe.json" data-lang="json" aria-label="Kod: Probe">
-                  <div class="code-toolbar">
-                    <button class="copy">📋 Kopiuj</button>
-                    <button class="save">💾 Zapisz</button>
-                    <button class="print">🖨️ Drukuj do PDF</button>
-                  </div>
-                  <pre><code>Ładowanie…</code></pre>
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
                 </div>
+                <pre><code class="language-json" data-src="/examples/json/probe.json">Ładowanie…</code></pre>
               </div>
 
               <div>
                 <h3>Metryka i koszty (JSON)</h3>
-                <div class="code-box" data-src="/examples/json/metric.json" data-lang="json" aria-label="Kod: Metryka">
-                  <div class="code-toolbar">
-                    <button class="copy">📋 Kopiuj</button>
-                    <button class="save">💾 Zapisz</button>
-                    <button class="print">🖨️ Drukuj do PDF</button>
-                  </div>
-                  <pre><code>Ładowanie…</code></pre>
+                <div class="code-toolbar">
+                  <button class="copy">📋 Kopiuj</button>
+                  <button class="save">💾 Zapisz</button>
+                  <button class="print">🖨️ Drukuj do PDF</button>
                 </div>
+                <pre><code class="language-json" data-src="/examples/json/metric.json">Ładowanie…</code></pre>
               </div>
             </div>
 
             <h3 style="margin-top:20px">Przykładowy skrypt (JS)</h3>
-            <div class="code-box" data-src="/examples/js/spec1.js" data-lang="javascript" aria-label="Kod: spec1.js">
-              <div class="code-toolbar">
-                <button class="copy">📋 Kopiuj</button>
-                <button class="save">💾 Zapisz</button>
-                <button class="print">🖨️ Drukuj do PDF</button>
-              </div>
-              <pre><code>Ładowanie…</code></pre>
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="save">💾 Zapisz</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
             </div>
+            <pre><code class="language-javascript" data-src="/examples/js/spec1.js">Ładowanie…</code></pre>
           </section>
 
-          <section id="validation" class="card" style="scroll-margin-top:90px">
+          <section id="validation" class="card">
             <h2>Walidacja</h2>
             <ul>
               <li>Użyj dowolnej biblioteki JSON Schema (draft 2020-12). YAML → JSON: zwykła serializacja.</li>
               <li>Tryb <strong>strict</strong> – wymaga pełnej zgodności ze schematem; <strong>lenient</strong> – ostrzega na polach nieznanych.</li>
               <li>Idempotencja: parse → export nie zmienia semantyki (kolejność pól dowolna).</li>
             </ul>
-            <div class="code-box" data-lang="bash" aria-label="Kod: CLI przykłady">
-              <div class="code-toolbar">
-                <button class="copy">📋 Kopiuj</button>
-                <button class="print">🖨️ Drukuj do PDF</button>
-              </div>
-              <pre><code>romion-sim validate spec.yaml --strict
-romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
+            <div class="code-toolbar">
+              <button class="copy">📋 Kopiuj</button>
+              <button class="print">🖨️ Drukuj do PDF</button>
             </div>
+            <pre><code class="language-bash">romion-sim validate spec.yaml --strict
+romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
           </section>
 
-          <section id="errors" class="card" style="scroll-margin-top:90px">
+          <section id="errors" class="card">
             <h2>Kody błędów (α)</h2>
             <div class="grid">
               <div>
@@ -232,26 +218,7 @@ romion-sim run spec.yaml --seed 123 --export metrics.json</code></pre>
             </div>
           </section>
 
-          <section id="cli" class="card" style="scroll-margin-top:90px">
-            <h2>Interfejs CLI (koncept)</h2>
-            <div class="code-box" data-lang="bash" aria-label="Kod: CLI opcje">
-              <div class="code-toolbar">
-                <button class="copy">📋 Kopiuj</button>
-                <button class="print">🖨️ Drukuj do PDF</button>
-              </div>
-              <pre><code>romion-sim run &lt;plik.yaml|json&gt; [opcje]
-
-Opcje:
-  --steps N           Nadpisz run.steps
-  --seed N            Ziarno RNG (powtórzenia)
-  --schedule NAME     Nadpisz run.schedule
-  --export key=path   Np. metrics=out.json,history=hist.json,final=state.json
-  --metric key=val    Przeciąż koszty metryki, np. add_R3=1.1</code></pre>
-            </div>
-            <p class="note">Dokładne flagi zostaną zamrożone w β.</p>
-          </section>
-
-          <section id="versioning" class="card" style="scroll-margin-top:90px">
+          <section id="versioning" class="card">
             <h2>Wersjonowanie i kompatybilność</h2>
             <ul>
               <li><strong>SemVer specyfikacji</strong> – <code>spec_version</code> w pliku eksperymentu.</li>
@@ -260,7 +227,7 @@ Opcje:
             </ul>
           </section>
 
-          <section id="security" class="card" style="scroll-margin-top:90px">
+          <section id="security" class="card">
             <h2>Bezpieczeństwo i dobre praktyki</h2>
             <ul>
               <li>Pliki specyfikacji są niewykonywalne (zakaz osadzania skryptów/komend).</li>
@@ -270,7 +237,7 @@ Opcje:
             </ul>
           </section>
 
-          <section id="glossary" class="card" style="scroll-margin-top:90px">
+          <section id="glossary" class="card">
             <h2>Glosariusz</h2>
             <div class="grid-3">
               <div><strong>Hipergraf</strong><br>Uogólnienie grafu: hiperbrzeg łączy n ≥ 2 węzły.</div>
@@ -282,15 +249,14 @@ Opcje:
             </div>
           </section>
 
-          <section id="feedback" class="card" style="scroll-margin-top:90px">
+          <section id="feedback" class="card">
             <h2>Uwagi do specyfikacji</h2>
             <form id="contact-form" action="https://formspree.io/f/xpwlelpg" method="POST" aria-label="Wyślij uwagi">
               <input type="email" name="email" placeholder="Twój e-mail (opcjonalnie)" autocomplete="email"
-                     style="padding:10px;border-radius:8px;border:1px solid var(--border);background:#fff;width:260px">
+                     style="padding:10px;border-radius:8px;border:1px solid var(--border);background:#2a2a2a;color:var(--text);width:260px">
               <input type="hidden" name="_subject" value="ROMION SIM™ — uwagi do specyfikacji">
-              <textarea name="message" rows="5" placeholder="Proponowany zapis/uwaga…"
-                        required
-                        style="display:block;width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid var(--border);background:#fff"></textarea>
+              <textarea name="message" rows="5" placeholder="Proponowany zapis/uwaga…" required
+                        style="display:block;width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid var(--border);background:#2a2a2a;color:var(--text)"></textarea>
               <button type="submit" style="background:var(--primary);color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer">Wyślij</button>
               <button type="button" id="printPage" style="margin-left:8px;background:#374151;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer">Drukuj stronę (PDF)</button>
             </form>
@@ -298,18 +264,17 @@ Opcje:
           </section>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <footer class="wrap" style="color:#6b7280;margin-bottom:40px">
-    © ROMION O'LOGIC™ — Specyfikacja ROMION SIM™ (ALPHA). <a href="/sim">Wróć do ROMION SIM™</a>.
-  </footer>
+    <footer>
+      © ROMION O'LOGIC™ — Specyfikacja ROMION SIM™ (ALPHA). <a href="/sim">Wróć do ROMION SIM™</a>.
+    </footer>
+  </div>
 
-  <!-- Ukryte miniatury PNG (dla podglądów linków itp.) -->
-  <div class="hidden-thumbs">
-    <img src="/thumb1.png" alt="miniatura 1">
-    <img src="/thumb2.png" alt="miniatura 2">
+  <!-- Miniatury / podglądy -->
+  <div class="sr-only">
+    <img src="/thumb1.png" alt="">
+    <img src="/thumb2.png" alt="">
   </div>
 </body>
-
 </html>
