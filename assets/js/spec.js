@@ -5,11 +5,11 @@
       ? fn()
       : document.addEventListener('DOMContentLoaded', fn);
 
-// Print whole page
-(function(){
-  var btn = document.getElementById('printPage');
-  if (btn) btn.addEventListener('click', function(){ window.print(); });
-})();
+  // Print whole page
+  (function(){
+    var btn = document.getElementById('printPage');
+    if (btn) btn.addEventListener('click', function(){ window.print(); });
+  })();
   
   function esc(s){ return String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
   function $(sel, root){ return (root||document).querySelector(sel); }
