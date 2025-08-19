@@ -193,3 +193,7 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
   margin-top:8px;
   padding:10px 12px;
 }
+
+.neocities-button img { display:inline-block; vertical-align:middle; }
+
+.js-off { margin: 12px 0; }
