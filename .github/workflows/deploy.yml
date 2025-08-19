@@ -1,0 +1,25 @@
+name: Deploy to Neocities
+on:
+  push:
+    branches: [ main ]   # zmień, jeśli pracujesz na innej gałęzi
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Spakuj cały serwis, bez .git i GitHub Actions
+      - name: Zip site
+        run: |
+          zip -r site.zip . -x ".git/*" ".github/*"
+
+      # Wyślij na Neocities przez API (Basic Auth: token jako user, puste hasło)
+      - name: Upload to Neocities
+        env:
+          TOKEN: ${{ secrets.NEOCITIES_API_TOKEN }}
+        run: |
+          curl -fsSL \
+            -u "$TOKEN:" \
+            -F "file=@site.zip" \
+            https://neocities.org/api/upload
