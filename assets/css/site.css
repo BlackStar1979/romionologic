@@ -130,6 +130,7 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
   #tocFab{ display:flex; }
 }
 
+
 /* --- fix: brak linii pod nav (już mamy) + mniejsze odstępy i bez poziomej kreski pod h2 --- */
 header.hero { border-bottom: 0 !important; }
 
