@@ -1,1 +1,12 @@
-xxx
+{
+  "probes": [
+    "loops",
+    {"name":"spectrum","params":{"laplacian":"clique","k":8}}
+  ]
+}
+{
+  "probes": [
+    "loops",
+    {"name":"spectrum","params":{"laplacian":"clique","k":8}}
+  ]
+}
