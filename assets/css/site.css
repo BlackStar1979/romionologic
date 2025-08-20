@@ -48,6 +48,13 @@ nav.hero a[aria-current="page"]{ text-decoration:underline }
   background:var(--accent); border:1px solid var(--border);
   border-radius:8px; padding:16px 20px; margin:18px 0;
 }
+.card ul {
+  margin-left: 0;
+  padding-left: 1.2em;
+}
+.card ul li {
+  margin: 0.25em 0;
+}
 .info{ background:var(--accent); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin:18px 0 }
 
 /* Teza – lepsze odstępy i wyrównanie */
@@ -214,14 +221,17 @@ footer{ text-align:center; margin:40px 0 10px; font-size:.95em; color:#b3b3b3 }
 .page-spec header.hero h1{
   font-size:2.1em;           /* było 2.5em */
   margin:0 0 4px;
+  margin-bottom: 4px;
 }
 .page-spec header.hero .subtitle{
   margin:0;                  /* było ~8px 0 0 */
+  margin-top: 0;
+  margin-bottom: 6px;
   font-size:1.0em;
   color:#cfd8e3;
 }
 .page-spec nav.hero{
-  margin-top:10px;           /* było 20px */
+  margin-top:6px;           /* było 20px potem 10px */
   gap:8px;
 }
 .page-spec nav.hero a{
