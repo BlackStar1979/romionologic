@@ -49,20 +49,20 @@
 
   <div class="container">
     <header class="hero">
-      <h1>ROMION O'LOGIC™</h1>
-      <p class="subtitle">Nowa Perspektywa na Rzeczywistość</p>
+      <h1>ROMION SIM™ - Specyfikacja (α)™</h1>
+      <p class="subtitle">Formalny opis formatu plików eksperymentów (YAML/JSON) dla ROMION SIM™</p>
       <nav class="hero" aria-label="Główna nawigacja">
         <a href="/">Wprowadzenie</a>
         <a href="/axioms">Aksjomaty</a>
         <a href="/sim">ROMION SIM™</a>
         <a href="/sim/spec" aria-current="page">Specyfikacja</a>
-        <a href="/core">Rdzeń idei</a>
+        <!-- <a href="/core">Rdzeń idei</a>
         <a href="/riddles">Zagadki</a>
         <a href="/apps">Zastosowania</a>
         <a href="/diagram">Diagram</a>
         <a href="/join">Dołącz</a>
         <a href="/roadmap">Roadmapa</a>
-        <a href="/manifest">Manifest</a>
+        <a href="/manifest">Manifest</a> -->
       </nav>
     </header>
 
@@ -76,8 +76,8 @@
 
     <!-- TEZA -->
     <div class="teza">
-      Teza strony: Specyfikacja ROMION SIM™ definiuje format eksperymentów (hipergraf, reguły τ, sondy 𝕀, uruchomienie),
-      zasady walidacji i wersjonowania oraz minimalny zestaw narzędzi do pracy.
+      <p><strong>Cel:</strong> zdefiniować stabilny, czytelny dla ludzi i maszyn format opisu: hipergrafu początkowego, zbioru lokalnych reguł <kbd>τ</kbd>, sond inwariantów <kbd>𝕀</kbd> oraz konfiguracji uruchomienia. YAML to rekomendacja dla człowieka, JSON dla API/automatyzacji. Obie reprezentacje są izomorficzne.</p>
+      <p class="note">Ta wersja to <span class="tag">0.1.0-alpha</span>. Zmiany łamiące będą komunikowane przez pole <code>spec_version</code>.</p>
     </div>
 
     <main class="wrap" id="main">
