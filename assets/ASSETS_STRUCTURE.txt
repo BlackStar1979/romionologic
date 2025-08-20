@@ -1,0 +1,245 @@
+ROMION O'LOGIC — ASSETS STRUCTURE (JS + CSS)
+Version: 2025-08-20
+Owner: Michał (repo: /romionologic/)
+Scope: /assets/js/** and /assets/css/**
+Goal: podział na małe moduły (≤ ~10 KB na plik), unikalne nazwy, ładowanie on-demand.
+
+──────────────────────────────────────────────────────────────────────────────
+ENTRY POINTS (niezmienne ścieżki w HTML)
+- CSS: <link rel="stylesheet" href="/assets/css/site.css">
+- JS  (SPEC page): <script type="module" src="/assets/js/spec.js"></script>
+- JS  (SIM page, jeśli użyte): <script type="module" src="/assets/js/sim.js"></script>
+
+ZASADY OGÓLNE
+1) Każdy plik ma globalnie unikalną nazwę bazową (prefiksy: rjs-*, rcss-*).
+2) Limit rozmiaru pliku: docelowo ≤ 10 KB (gdy urośnie → dalej dzielimy).
+3) Zero zależności ciężkich; YAML parser ładowany on-demand.
+4) spec.js oraz site.css są tylko „szynami” (agregatorami importów).
+5) Zmiany w deployu — dopiero po decyzji użytkownika.
+6) Styl klas CSS: prefiks .r-… (np. .r-card, .r-table) + BEM tam gdzie ma sens.
+
+──────────────────────────────────────────────────────────────────────────────
+/assets/js/  (ES Modules, UTF-8, LF)
+
+spec.js
+  ROLA: ENTRY dla /sim/spec. TYLKO importuje rjs-spec-bootstrap.mjs.
+  ŁADOWANIE: zawsze na /sim/spec.html
+  ZAWARTOŚĆ: max kilka linii (import + ewentualny init).
+
+sim.js
+  ROLA: ENTRY dla /sim/ (jeśli używane). TYLKO importuje rjs-sim-bootstrap.mjs.
+  ŁADOWANIE: tylko na /sim/index.html
+  ZAWARTOŚĆ: jw.
+
+rjs-dom-utils.mjs
+  ROLA: małe utilsy DOM: qs, qsa, ce (createEl), on (delegacja), css(setStyles).
+  ŁADOWANIE: gdykolwiek używamy UI/renderów.
+  EXPORTS: { qs, qsa, ce, on, css }
+  UWAGI: zero zależności, mikro.
+
+rjs-net-fetch.mjs
+  ROLA: fetch z timeoutem, proste cache (Map), sprawdzanie HTTP 200, errors.
+  ŁADOWANIE: gdy pobieramy /examples/** lub inne zasoby statyczne.
+  EXPORTS: { get(url, {json?:bool, text?:bool, cache?:bool, timeoutMs?:number}) }
+  UWAGI: nie łącz z YAML; ten moduł nie wie o formatach.
+
+rjs-formatters.mjs
+  ROLA: drobne formatery: prettyJSON, bytes(n), time(ms), snippet(text,n).
+  ŁADOWANIE: gdy renderujemy dane.
+  EXPORTS: { prettyJSON, bytes, time, snippet }
+
+rjs-router-lite.mjs
+  ROLA: prosty hash-router (#section) + scrollIntoView.
+  ŁADOWANIE: tylko jeśli strona korzysta z nawigacji sekcji.
+  EXPORTS: { onRoute(fn), setRoute(id), getRoute() }
+
+rjs-ui-components.mjs
+  ROLA: mikro-komponenty HTML (Card, Notice, Spinner, Button) zwracające elementy.
+  ŁADOWANIE: gdy renderujemy UI.
+  EXPORTS: { Card(opts), Notice(type,msg), Spinner(), Button(opts) }
+  UWAGI: tylko czysty DOM; brak frameworków.
+
+rjs-ui-renderers.mjs
+  ROLA: helpery do wstawiania bloków code/pre, tabel, list, drzew.
+  ŁADOWANIE: przy widoku spec.
+  EXPORTS: { renderCode, renderTable, renderList, renderTree }
+
+rjs-ui-toast.mjs
+  ROLA: lekkie toasty (info/success/warn/error) z auto-hide.
+  ŁADOWANIE: gdy chcemy komunikaty statusu.
+  EXPORTS: { toast(type, message, opts?) }
+
+rjs-spec-bootstrap.mjs
+  ROLA: główny init /sim/spec: montuje spinner, pobiera dane, buduje widok i nawigację.
+  ŁADOWANIE: przez spec.js (ENTRY).
+  EXPORTS: (opcjonalnie) { initSpecPage } – ale inicjalizacja może zachodzić od razu.
+  ZALEŻNOŚCI: rjs-spec-data-loader, rjs-spec-render, rjs-spec-nav, rjs-spec-validate,
+               rjs-ui-*, rjs-dom-utils, rjs-formatters.
+
+rjs-spec-data-loader.mjs
+  ROLA: ładowanie danych z /examples/**; rozpoznanie formatu po rozszerzeniu.
+  ŁADOWANIE: podczas init spec.
+  EXPORTS: { loadMany(paths:string[]): Promise<Record<string,any>>, loadOne(path) }
+  ZACHOWANIE:
+    - .json → JSON.parse
+    - .yaml/.yml → dynamiczny import('./rjs-yaml-lite.mjs') + parseYAML
+    - błędy → rzuca wyjątek z { url, status, line?, col? }
+  UWAGI: nie renderuje; tylko dostarcza struktury.
+
+rjs-spec-render.mjs
+  ROLA: sklejanie widoku specyfikacji: sekcje, code blocks, tabele, drzewa.
+  ŁADOWANIE: podczas init spec.
+  EXPORTS: { renderSpec(containerEl, dataBundle) }
+
+rjs-spec-nav.mjs
+  ROLA: tworzy boczną lub górną nawigację sekcji; integracja z router-lite.
+  ŁADOWANIE: podczas init spec, jeśli jest TOC/sekcje.
+  EXPORTS: { buildNav(containerEl, sections), highlightOnScroll() }
+
+rjs-spec-validate.mjs
+  ROLA: walidacja ścieżek i struktury danych; HEAD 200? brakujące pola?
+  ŁADOWANIE: podczas init spec (przed renderem); zwraca listę uwag/błędów.
+  EXPORTS: { validateDataBundle(bundle): ValidationReport }
+  UWAGI: błędy → rjs-ui-toast + szczegóły (snippet + ścieżka).
+
+rjs-sim-bootstrap.mjs
+  ROLA: init dla /sim/ (jeśli używane): montaż sceny, kontrole, dane demo.
+  ŁADOWANIE: przez sim.js (ENTRY).
+  EXPORTS: { initSimPage }
+
+rjs-sim-render.mjs
+  ROLA: rysowanie/aktualizacja scen/diagramów (placeholder dopóki nie zdefiniujemy).
+  ŁADOWANIE: tylko /sim/.
+  EXPORTS: { renderScene(state) }
+
+rjs-sim-controls.mjs
+  ROLA: play/pause/zoom/reset — logika przycisków i hotkeys.
+  ŁADOWANIE: tylko /sim/.
+  EXPORTS: { attachControls(root, callbacks) }
+
+rjs-yaml-lite.mjs
+  ROLA: LEKKI parser YAML dopasowany do naszych plików (mapy, listy, stringi, boole, liczby,
+        komentarze, dokumenty ---/... i proste bloki |/>).
+  ŁADOWANIE: ON-DEMAND (tylko przy .yaml/.yml) przez dynamic import().
+  EXPORTS: { parseYAML(text), detectYAML(text) }
+  OGRANICZENIA: brak kotwic (&/*) i tagów (!!); w razie wykrycia — błąd z line/col.
+
+──────────────────────────────────────────────────────────────────────────────
+/assets/css/
+
+site.css
+  ROLA: ENTRY; TYLKO @import pozostałych rcss-*.css (kolejność kontroluje kaskadę).
+  ŁADOWANIE: każda strona.
+  ZAWARTOŚĆ: lista @import (bez styli własnych).
+
+rcss-reset.css
+  ROLA: lekki reset/normalize (box-sizing, marginesy, obrazy, formularze).
+  ŁADOWANIE: zawsze, jako pierwszy.
+
+rcss-variables.css
+  ROLA: :root — kolory, spacing, typografia, promienie, cienie, prędkości animacji.
+  ŁADOWANIE: po reset.
+
+rcss-typography.css
+  ROLA: style body, nagłówków, paragrafów, linków, code, pre, kbd, strong/em.
+  ŁADOWANIE: po variables.
+
+rcss-grid.css
+  ROLA: layout siatki: kontenery, kolumny, gapy, responsive breakpoints.
+  ŁADOWANIE: globalnie.
+
+rcss-header.css
+  ROLA: sticky header/topbar, pozycjonowanie nawigacji głównej.
+  ŁADOWANIE: globalnie (jeśli header obecny).
+
+rcss-sidebar.css
+  ROLA: panel boczny/TOC (pozycja, szerokość, zachowanie mobile → offcanvas/stack).
+  ŁADOWANIE: na stronach z nawigacją boczną (np. /sim/spec).
+
+rcss-main.css
+  ROLA: obszar treści: maks. szerokość, padding, sekcje, odstępy.
+  ŁADOWANIE: globalnie.
+
+rcss-cards.css
+  ROLA: karty/panele: .r-card, header/footer, warianty.
+  ŁADOWANIE: jeśli używamy kart.
+
+rcss-buttons.css
+  ROLA: przyciski i stany (primary/ghost/danger), focus & disabled.
+  ŁADOWANIE: jeśli są przyciski.
+
+rcss-notices.css
+  ROLA: alerty/notices (info/success/warn/error) + ikony (opcjonalnie pseudo-elementy).
+  ŁADOWANIE: gdy używamy toastów/komunikatów.
+
+rcss-tables.css
+  ROLA: tabele z overflow-x na mobile, zebra, sticky header (opcjonalnie).
+  ŁADOWANIE: przy renderach tabel.
+
+rcss-code.css
+  ROLA: formatowanie pre/code (monospace, wrap, lekkie highlight pseudo-klasami).
+  ŁADOWANIE: gdy pokazujemy bloki kodu/spec.
+
+rcss-spinner.css
+  ROLA: animacja spinnera (CSS-only).
+  ŁADOWANIE: gdy pokazujemy spinner.
+
+rcss-spec-page.css
+  ROLA: specyficzne poprawki/layout dla /sim/spec (np. proporcje sidebar/main).
+  ŁADOWANIE: tylko na /sim/spec.
+
+rcss-sim-page.css
+  ROLA: specyficzne style dla /sim/ (scena, canvas/svg, panel narzędzi).
+  ŁADOWANIE: tylko na /sim/.
+
+rcss-utilities.css
+  ROLA: drobne klasy pomocnicze (.sr-only, .visually-hidden, .mt-*, .px-*, .grid-col-*)
+  ŁADOWANIE: globalnie, ale minimalnie.
+
+──────────────────────────────────────────────────────────────────────────────
+ŁADOWANIE WARUNKOWE / ZASADY
+
+- /sim/spec.html:
+  - MUSI: /assets/css/site.css, /assets/js/spec.js
+  - Zaimportuje: rjs-spec-bootstrap → (loader/render/nav/validate + ui + core).
+  - YAML: rjs-yaml-lite.mjs ładowany dynamicznie TYLKO gdy trafimy na .yaml/.yml.
+
+- /sim/index.html (jeśli użyte):
+  - MUSI: /assets/css/site.css, /assets/js/sim.js
+  - Zaimportuje: rjs-sim-bootstrap → (sim-render, sim-controls + ui + core).
+
+- CSS import order w site.css (proponowana):
+  reset → variables → typography → grid → header → sidebar → main → components
+  (cards, buttons, notices, tables, code, spinner) → pages (spec/sim) → utilities
+
+──────────────────────────────────────────────────────────────────────────────
+KRYTERIA JAKOŚCI / LIMITY
+
+- Rozmiar: ~8–10 KB/plik (twardy sygnał do cięcia > 12 KB).
+- Brak powtarzania nazw plików (globalnie unikalne).
+- API modułów JS stabilne: named exports; zero default exports.
+- Błędy użytkownika (np. brak pliku, 404, zły YAML): komunikat na UI (toast),
+  a w konsoli szczegóły (line/col i snippet).
+- Żadnych side-effects w modułach poza bootstrapami.
+
+──────────────────────────────────────────────────────────────────────────────
+TODO / ROADMAP (dopisz daty przy wdrażaniu)
+
+[ ] Utworzyć puste pliki wg powyższej listy.
+[ ] Wypełnić ENTRY: site.css (same @import) i spec.js (sam import bootstrapu).
+[ ] Dodać szkielety: rjs-spec-bootstrap.mjs, rjs-spec-data-loader.mjs.
+[ ] Dodać minimalny rjs-yaml-lite.mjs (parse map/list/string/number/bool).
+[ ] Pierwszy smoke test /sim/spec (JSON only).
+[ ] Włączyć parser YAML (on-demand) i przetestować na /examples/yaml/**.
+[ ] Przenieść style do rcss-*.css (krokami, po kilka reguł).
+[ ] Ewentualnie dorobić rjs-router-lite.mjs i rcss-sidebar.css, gdy TOC gotowe.
+
+──────────────────────────────────────────────────────────────────────────────
+NOTATKI / KONWENCJE NAZW
+
+- Pliki JS: rjs-<obszar>-<rola>.mjs
+- Pliki CSS: rcss-<kategoria>.css
+- Klasy CSS: .r-<komponent>__(element)--(modyfikator) (BEM opcjonalnie)
+- Identyfikatory sekcji: data-section="id" + #id w URL (router-lite).
+
+END OF FILE
