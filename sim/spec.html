@@ -49,7 +49,7 @@
 
   <div class="container">
     <header class="hero">
-      <h1>ROMION SIM™ - Specyfikacja (α)™</h1>
+      <h1>ROMION SIM™ &mdash; Specyfikacja (α)</h1>
       <p class="subtitle">Formalny opis formatu plików eksperymentów (YAML/JSON) dla ROMION SIM™</p>
       <nav class="hero" aria-label="Główna nawigacja">
         <a href="/">Wprowadzenie</a>
@@ -76,24 +76,22 @@
 
     <!-- TEZA -->
     <div class="teza">
-      <p><strong>Cel:</strong> zdefiniować stabilny, czytelny dla ludzi i maszyn format opisu: hipergrafu początkowego, zbioru lokalnych reguł <kbd>τ</kbd>, sond inwariantów <kbd>𝕀</kbd> oraz konfiguracji uruchomienia. YAML to rekomendacja dla człowieka, JSON dla API/automatyzacji. Obie reprezentacje są izomorficzne.</p>
+      <p><strong>Cel:</strong> zdefiniować stabilny, jednoznaczny, czytelny dla ludzi i maszyn format opisu: <em>hipergrafu początkowego</em>, zbioru lokalnych reguł <kbd>τ</kbd>, sond inwariantów <kbd>𝕀</kbd> oraz konfiguracji uruchomienia. Minimalne wymagania są sformalizowane w JSON&nbsp;Schema.</p>
       <p class="note">Ta wersja to <span class="tag">0.1.0-alpha</span>. Zmiany łamiące będą komunikowane przez pole <code>spec_version</code>.</p>
     </div>
 
-    <main class="wrap" id="main">
-      <h1>ROMION SIM™ — Specyfikacja (α)</h1>
-      <p class="note">Ta wersja to <strong>0.1.0-alpha</strong>. YAML zalecany dla człowieka, JSON dla API/automatyzacji. Obie reprezentacje są izomorficzne.</p>
-
+    <main class="wrap" id="main" role="main">
       <div class="columns">
-       <!-- CONTENT -->
+        <!-- CONTENT -->
         <div>
+          
+          <!-- SEKCJE -->
           <section id="overview" class="card">
             <h2>Przegląd</h2>
-            <p><strong>Cel:</strong> Stabilny i jednoznaczny opis: <em>hipergrafu początkowego</em>, zbioru lokalnych reguł <kbd>τ</kbd>,
-               sond inwariantów <kbd>𝕀</kbd> oraz konfiguracji uruchomienia. Minimalne wymagania są zamknięte w JSON Schema.</p>
+            <p class="note">YAML zalecany dla człowieka. JSON zalecany dla API/automatyzacji. Obie reprezentacje są izomorficzne.</p>
             <ul>
               <li><strong>Pliki wejściowe:</strong> <code>.yaml</code> lub <code>.json</code></li>
-              <li><strong>Walidacja:</strong> JSON Schema (draft 2020-12)</li>
+              <li><strong>Walidacja:</strong> JSON Schema (draft&nbsp;2020-12)</li>
               <li><strong>Wersjonowanie:</strong> SemVer w polu <code>spec_version</code></li>
             </ul>
           </section>
