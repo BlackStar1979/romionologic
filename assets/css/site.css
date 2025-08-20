@@ -49,9 +49,33 @@ nav.hero a[aria-current="page"]{ text-decoration:underline }
   border-radius:8px; padding:16px 20px; margin:18px 0;
 }
 .info{ background:var(--accent); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin:18px 0 }
+
+/* Teza – lepsze odstępy i wyrównanie */
 .teza{
-  background:rgba(74,144,226,.1); border:1px solid #3a5c82; color:#d9e9ff;
-  padding:12px 14px; border-radius:8px; margin-bottom:18px;
+  background:rgba(74,144,226,.1);
+  border:1px solid #3a5c82;
+  color:#d9e9ff;
+  padding:12px 14px;
+  border-radius:8px;
+  margin-bottom:18px;
+}
+.teza p {
+  margin: 0.35rem 0;
+}
+.teza .note {
+  color: #cfd8e3;
+}
+
+/* Wizualny „badge” dla wersji */
+.tag {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--primary);   /* zamiast #222 → spójny niebieski */
+  color: #fff;                  /* jasny tekst */
+  font-weight: 600;
+  font-size: 0.95em;
 }
 
 /* ====== Typografia ====== */
